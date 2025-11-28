@@ -3,13 +3,11 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1" />
-  <title>LifeTraverse · 老年工作室 × UGH</title>
+  <title>LifeTraverse · 老年工作室</title>
   <style>
     :root {
       color-scheme: dark;
       --bg: #020617;
-      --bg-top: #020617;
-      --bg-bottom: #020617;
       --card: #020617;
       --accent: #22c55e;
       --accent-soft: rgba(34, 197, 94, 0.12);
@@ -19,7 +17,7 @@
     }
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
-      font-family: system-ui,-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif;
       background: radial-gradient(circle at top, #0b1120 0, #020617 45%, #000 100%);
       color: var(--text-main);
       min-height: 100vh;
@@ -31,9 +29,7 @@
       max-width: 960px;
       padding: 22px 16px 32px;
     }
-    header {
-      margin-bottom: 18px;
-    }
+    header { margin-bottom: 18px; }
     .logo-line {
       font-size: 15px;
       letter-spacing: 0.08em;
@@ -50,15 +46,24 @@
       font-size: 14px;
       line-height: 1.7;
       color: var(--text-sub);
-      margin-bottom: 12px;
+      margin-bottom: 10px;
     }
-
-    .cta-top {
+    .tagline-card {
       padding: 12px 12px 10px;
       border-radius: 16px;
       border: 1px solid var(--border-soft);
       background: radial-gradient(circle at top left, rgba(34, 197, 94, 0.18), #020617);
-      margin-bottom: 14px;
+      font-size: 13px;
+      line-height: 1.7;
+      color: var(--text-sub);
+    }
+
+    .cta-top {
+      margin-top: 18px;
+      padding: 12px 12px 10px;
+      border-radius: 16px;
+      border: 1px solid var(--border-soft);
+      background: #020617;
     }
     .cta-text {
       font-size: 14px;
@@ -75,21 +80,21 @@
       font-size: 15px;
       font-weight: 560;
       color: #022c22;
-      background: linear-gradient(135deg,#22c55e,#4ade80);
+      background: linear-gradient(135deg, #22c55e, #4ade80);
       cursor: pointer;
       text-decoration: none;
-      box-shadow: 0 8px 20px rgba(0,0,0,0.35);
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.35);
       transition: transform 0.14s ease-out, box-shadow 0.14s ease-out, background 0.14s ease-out;
       white-space: nowrap;
     }
     .cta-btn:hover {
       transform: translateY(-1px);
-      box-shadow: 0 10px 26px rgba(0,0,0,0.45);
-      background: linear-gradient(135deg,#4ade80,#bbf7d0);
+      box-shadow: 0 10px 26px rgba(0, 0, 0, 0.45);
+      background: linear-gradient(135deg, #4ade80, #bbf7d0);
     }
     .cta-btn:active {
       transform: translateY(0);
-      box-shadow: 0 4px 12px rgba(0,0,0,0.45);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.45);
     }
     .cta-note {
       margin-top: 6px;
@@ -104,10 +109,9 @@
       font-size: 15px;
       font-weight: 600;
     }
-
     .studio-grid {
       display: grid;
-      grid-template-columns: repeat(2,minmax(0,1fr));
+      grid-template-columns: repeat(2, minmax(0, 1fr));
       gap: 8px;
     }
     @media (max-width: 640px) {
@@ -130,29 +134,17 @@
       color: var(--text-sub);
     }
 
-    .info-card {
-      margin-top: 12px;
-      padding: 10px 11px 9px;
-      border-radius: 14px;
-      background: #020617;
-      border: 1px solid var(--border-soft);
-      font-size: 13px;
-      color: var(--text-sub);
-      line-height: 1.7;
-    }
-    .info-card b { color: var(--text-main); }
-
     footer {
-      margin-top: 18px;
+      margin-top: 20px;
       font-size: 11px;
       color: var(--text-sub);
-      border-top: 1px solid rgba(148,163,184,0.2);
+      border-top: 1px solid rgba(148, 163, 184, 0.2);
       padding-top: 8px;
       line-height: 1.6;
     }
   </style>
   <script>
-    // 是否已经来过一次：来过就直接进工作台
+    // 已经进入过工作室的话，下次直接进去（保留之前的体验）
     (function () {
       try {
         var VISIT_KEY = "lt_elder_hasVisited";
@@ -162,9 +154,7 @@
         if (hasVisited && !forceHome) {
           window.location.replace("studio.html");
         }
-      } catch (e) {
-        // 本地不开启也没关系
-      }
+      } catch (e) {}
     })();
 
     function enterStudio() {
@@ -179,16 +169,20 @@
   <main class="wrap">
     <header>
       <div class="logo-line">LIFETRAVERSE · PERSONAL STUDIO</div>
-      <h1>老年工作室 × UGH</h1>
+      <h1>老年工作室</h1>
       <div class="subtitle">
-        不总结人生，只是慢慢整理。<br />
-        把故事、作品、想法和经验安静地写下来，留给自己，也留给在乎你的人。
+        不总结人生，只是偶尔坐下来，整理几件事。<br />
+        写给现在的自己，也写给以后想回头看的那一天。
+      </div>
+      <div class="tagline-card">
+        为 50–80 岁左右的人准备的一间小书房：这次写一点，过几次再补一段，
+        不需要赶进度，只是把走过的痕迹慢慢收好。
       </div>
     </header>
 
     <section class="cta-top">
       <div class="cta-text">
-        这里是你的个人工作室，不是群聊，也不是作业本。每次只需写一件事、一小段想法就好。
+        建议先在电脑上试一试结构，觉得顺手，再用手机浏览器打开本页面并添加到桌面。
       </div>
       <button class="cta-btn" onclick="enterStudio()">进入我的工作室</button>
       <div class="cta-note">
@@ -197,43 +191,38 @@
     </section>
 
     <section>
-      <div class="section-title">四个小工作室</div>
+      <div class="section-title">四个工作室</div>
       <div class="studio-grid">
         <div class="studio-card">
-          <div class="studio-name">精彩生活 / 温馨回忆</div>
+          <div class="studio-name">生活 · 温馨回忆</div>
           <div class="studio-desc">
-            童年、工作、朋友、旅行、心情……从一件事、一小段开始，慢慢长出一册可以回头翻看的记录。
+            记一件这一次想留住的小事，慢慢拼成可以翻看的生活记录。
           </div>
         </div>
         <div class="studio-card">
           <div class="studio-name">张扬艺术工作室</div>
           <div class="studio-desc">
-            书法、绘画、诗歌、摄影、手工……已经完成的和正在构思的，都可以在这里放一份作品版。
+            写诗、记旋律、留作品草稿，让灵感有一个安静的落脚点。
           </div>
         </div>
         <div class="studio-card">
           <div class="studio-name">理论思想工作室</div>
           <div class="studio-desc">
-            人生观、教育观、社团或信仰经历与体会。UGH 只是文秘，帮你听清楚、写清楚，不替你站队。
+            把对人生、教育、信仰的想法写清楚，给自己一个条理分明的版本。
           </div>
         </div>
         <div class="studio-card">
           <div class="studio-name">技术传承工作室</div>
           <div class="studio-desc">
-            一生做过的项目、积累的专业经验和改进思路，整理成「可以交给后来人」的技术备忘录。
+            一生做过的项目和经验，整理成可以交给后来人看的技术备忘录。
           </div>
         </div>
       </div>
     </section>
 
-    <section class="info-card">
-      <b>责任边界：</b>
-      老年工作室只帮你记录、整理和表达，不做医疗、养老规划、投资或法律决策。
-      涉及这些问题，只会帮你把情况和问题写清楚，方便你去问专业人士。
-    </section>
-
     <footer>
-      LifeTraverse · 老年工作室（浏览器测试版） · 基于 UGH 内核本地运行。
+      说明：本工具只负责记录和整理，不做医疗、理财、法律等决策建议。<br />
+      LifeTraverse · 老年工作室（浏览器测试版）。
     </footer>
   </main>
 </body>
