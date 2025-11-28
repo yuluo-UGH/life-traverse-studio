@@ -2,960 +2,1070 @@
 <html lang="zh-CN">
 <head>
   <meta charset="UTF-8" />
-  <title>LifeTraverse · 老年工作室 · 工作台</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1" />
+  <title>老年工作室 · LifeTraverse</title>
   <style>
-    * { box-sizing: border-box; }
-
+    :root {
+      color-scheme: dark;
+      --bg: #020617;
+      --card: #020617;
+      --accent: #22c55e;
+      --accent-soft: rgba(34, 197, 94, 0.12);
+      --text-main: #f9fafb;
+      --text-sub: #9ca3af;
+      --border-soft: #1f2937;
+      --danger: #f97373;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
-      margin: 0;
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      background: #020617;
-      color: #e5e7eb;
-      font-size: 15px;
-    }
-
-    .app {
-      max-width: 960px;
-      margin: 0 auto;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif;
+      background: radial-gradient(circle at top, #020617 0, #000 80%);
+      color: var(--text-main);
       min-height: 100vh;
-      padding: 10px 10px 22px;
-    }
-
-    header {
-      padding: 6px 2px 10px;
-    }
-
-    .header-row {
       display: flex;
+      justify-content: center;
+    }
+    .app {
+      width: 100%;
+      max-width: 960px;
+      padding: 16px 12px 28px;
+    }
+    @media (min-width: 768px) {
+      .app { padding: 20px 16px 32px; }
+    }
+    .top-bar {
+      display: flex;
+      align-items: center;
       justify-content: space-between;
-      align-items: flex-start;
-      gap: 8px;
+      margin-bottom: 10px;
     }
-
-    .header-main {
-      flex: 1;
-      min-width: 0;
+    .top-title {
+      font-size: 18px;
+      font-weight: 650;
     }
-
-    .app-title {
-      font-size: 20px;
-      font-weight: 600;
-      color: #f9fafb;
+    .top-subtitle {
+      font-size: 12px;
+      color: var(--text-sub);
+      margin-top: 2px;
     }
-
-    .app-subtitle {
-      font-size: 13px;
-      color: #9ca3af;
-      margin-top: 4px;
-      line-height: 1.6;
-    }
-
-    .persona {
+    .avatar {
       display: flex;
-      flex-direction: column;
-      align-items: flex-end;
-      cursor: pointer;
-      padding-left: 8px;
+      align-items: center;
+      gap: 6px;
+      cursor: default;
     }
-
-    .persona-avatar {
-      width: 32px;
-      height: 32px;
+    .avatar-circle {
+      width: 30px;
+      height: 30px;
       border-radius: 999px;
-      background: #0f172a;
-      border: 1px solid #1f2937;
+      background: radial-gradient(circle at 30% 20%, #22c55e, #0b1120);
+      border: 1px solid rgba(248, 250, 252, 0.6);
       display: flex;
       align-items: center;
       justify-content: center;
       font-size: 16px;
-      color: #e5e7eb;
-      margin-bottom: 2px;
+      font-weight: 600;
+    }
+    .avatar-text-main {
+      font-size: 13px;
+      font-weight: 600;
+    }
+    .avatar-text-sub {
+      font-size: 11px;
+      color: var(--text-sub);
     }
 
-    .persona-name {
-      font-size: 12px;
-      color: #9ca3af;
-      max-width: 110px;
-      text-align: right;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
+    .studio-tabs {
+      display: flex;
+      gap: 6px;
+      margin: 10px 0 12px;
+      overflow-x: auto;
+      padding-bottom: 2px;
     }
-
-    main {
-      margin-top: 8px;
-    }
-
-    .btn {
-      padding: 7px 14px;
+    .studio-tab {
+      flex: 1;
+      min-width: 0;
       border-radius: 999px;
-      border: none;
-      font-size: 14px;
-      cursor: pointer;
-      white-space: nowrap;
-    }
-
-    .btn-primary {
-      background: linear-gradient(135deg,#22c55e,#4ade80);
-      color: #022c22;
-      font-weight: 600;
-    }
-
-    .btn-secondary {
-      background: #0f172a;
-      color: #e5e7eb;
-      border: 1px solid #1f2937;
-    }
-
-    .btn:active {
-      opacity: 0.9;
-      transform: translateY(1px);
-    }
-
-    #view-lobby {
-      border-radius: 16px;
-      border: 1px solid #1e293b;
-      padding: 10px;
-      background: #020617;
-      box-shadow: 0 12px 40px rgba(0,0,0,0.7);
-    }
-
-    .lobby-header-text {
-      margin-bottom: 10px;
-    }
-
-    .lobby-grid {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0,1fr));
-      gap: 8px;
-      margin-bottom: 10px;
-    }
-
-    .lobby-card {
-      border-radius: 12px;
-      border: 1px solid #1f2937;
-      padding: 10px 10px 11px;
-      background: #020617;
-      cursor: pointer;
-    }
-
-    .lobby-card-title {
-      font-size: 16px;
-      font-weight: 600;
-      margin-bottom: 4px;
-    }
-
-    .lobby-card-desc {
+      border: 1px solid var(--border-soft);
+      background: rgba(15, 23, 42, 0.9);
+      padding: 6px 10px;
       font-size: 13px;
-      color: #9ca3af;
-      line-height: 1.6;
-    }
-
-    .lobby-newcard {
-      margin-top: 6px;
-      padding-top: 8px;
-      border-top: 1px dashed #1f2937;
-    }
-
-    .lobby-newcard p {
-      font-size: 13px;
-      color: #9ca3af;
-      margin-top: 4px;
-      line-height: 1.6;
-    }
-
-    #view-studio {
-      border-radius: 16px;
-      border: 1px solid #1e293b;
-      padding: 10px;
-      background: #020617;
-      box-shadow: 0 12px 40px rgba(0,0,0,0.7);
-      display: none;
-    }
-
-    .studio-top-bar {
+      color: var(--text-sub);
       display: flex;
       align-items: center;
-      justify-content: space-between;
-      gap: 8px;
-      margin-bottom: 8px;
-    }
-
-    .studio-back {
-      font-size: 13px;
-      color: #9ca3af;
-      cursor: pointer;
-    }
-
-    .studio-back span {
-      font-size: 16px;
-      margin-right: 4px;
-    }
-
-    .studio-header {
-      padding: 6px 2px 8px;
-    }
-
-    .studio-title {
-      font-size: 18px;
-      font-weight: 600;
-      margin-bottom: 3px;
-    }
-
-    .studio-subtitle {
-      font-size: 13px;
-      color: #9ca3af;
-      line-height: 1.6;
-    }
-
-    .studio-welcome {
-      margin-top: 5px;
-      font-size: 14px;
-      color: #cbd5f5;
-      line-height: 1.6;
-    }
-
-    .studio-actions {
-      margin-top: 6px;
-      margin-bottom: 6px;
-    }
-
-    .studio-actions .btn-primary {
-      padding-inline: 16px;
-    }
-
-    .studio-list {
-      border-radius: 12px;
-      border: 1px solid #1f2937;
-      padding: 8px 8px 10px;
-      background: #020617;
-      max-height: 360px;
-      overflow-y: auto;
-    }
-
-    .studio-list-title {
-      font-size: 14px;
-      color: #9ca3af;
-      margin-bottom: 6px;
-    }
-
-    .card-item {
-      border-radius: 8px;
-      border: 1px solid #1f2937;
-      padding: 7px 8px;
-      margin-bottom: 6px;
-      cursor: pointer;
-      background: #020617;
-    }
-
-    .card-item:hover {
-      border-color: #22c55e;
-    }
-
-    .card-title {
-      font-size: 14px;
-      color: #e5e7eb;
-      margin-bottom: 2px;
-    }
-
-    .card-snippet {
-      font-size: 13px;
-      color: #9ca3af;
+      justify-content: center;
       white-space: nowrap;
-      text-overflow: ellipsis;
-      overflow: hidden;
-    }
-
-    .card-meta {
-      font-size: 11px;
-      color: #6b7280;
-      margin-top: 2px;
-    }
-
-    .studio-empty {
-      font-size: 14px;
-      color: #6b7280;
-      padding: 4px;
-      line-height: 1.6;
-    }
-
-    #view-card {
-      border-radius: 16px;
-      border: 1px solid #1e293b;
-      padding: 10px;
-      background: #020617;
-      box-shadow: 0 12px 40px rgba(0,0,0,0.7);
-      display: none;
-    }
-
-    .card-page-back {
-      font-size: 13px;
-      color: #9ca3af;
       cursor: pointer;
-      margin-bottom: 6px;
+      transition: background 0.15s ease-out, border-color 0.15s ease-out, color 0.15s ease-out, transform 0.08s ease-out;
+    }
+    .studio-tab span {
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .studio-tab.active {
+      color: var(--text-main);
+      border-color: var(--accent);
+      background: radial-gradient(circle at top left, var(--accent-soft), rgba(15, 23, 42, 0.96));
+      transform: translateY(-1px);
     }
 
-    .card-page-back span {
-      font-size: 16px;
-      margin-right: 4px;
-    }
-
-    .card-page-header {
-      margin-bottom: 8px;
-    }
-
-    .card-page-studio-label {
-      font-size: 12px;
-      color: #6b7280;
-      margin-bottom: 2px;
-    }
-
-    .card-page-title {
-      font-size: 18px;
-      font-weight: 600;
-      color: #f9fafb;
-    }
-
-    .card-page-meta {
-      font-size: 11px;
-      color: #6b7280;
-      margin-top: 3px;
-    }
-
-    .card-page-content {
-      font-size: 15px;
-      color: #e5e7eb;
-      line-height: 1.8;
-      margin-top: 8px;
-      white-space: pre-wrap;
-    }
-
-    .card-page-actions {
-      margin-top: 10px;
+    .layout {
       display: flex;
-      gap: 8px;
-      flex-wrap: wrap;
+      flex-direction: column;
+      gap: 10px;
+    }
+    @media (min-width: 768px) {
+      .layout {
+        flex-direction: row;
+        align-items: flex-start;
+      }
+    }
+    .panel {
+      background: rgba(15, 23, 42, 0.96);
+      border-radius: 14px;
+      border: 1px solid var(--border-soft);
+      padding: 10px 11px 11px;
+    }
+    @media (min-width: 768px) {
+      .panel { padding: 12px 13px 13px; }
+    }
+    .panel-left {
+      flex: 0 0 280px;
+    }
+    .panel-right {
+      flex: 1;
+      min-width: 0;
     }
 
-    .card-edit-title-label,
-    .card-edit-content-label {
-      font-size: 13px;
-      color: #9ca3af;
+    .studio-name {
+      font-size: 15px;
+      font-weight: 600;
       margin-bottom: 4px;
     }
-
-    .card-edit-title-input {
-      width: 100%;
-      padding: 7px 8px;
-      border-radius: 8px;
-      border: 1px solid #1f2937;
-      font-size: 15px;
-      background: #020617;
-      color: #e5e7eb;
+    .studio-fullname {
+      font-size: 12px;
+      color: var(--text-sub);
       margin-bottom: 8px;
     }
-
-    .card-edit-content-input {
-      width: 100%;
-      min-height: 140px;
-      resize: none;
-      padding: 8px 8px;
-      border-radius: 8px;
-      border: 1px solid #1f2937;
-      font-size: 15px;
-      background: #020617;
-      color: #e5e7eb;
-      line-height: 1.8;
-    }
-
-    .era-hint {
-      margin-top: 8px;
-      padding: 7px 8px;
-      border-left: 3px solid #fde68a;
-      border-radius: 6px;
-      background: #0f172a;
-      font-size: 14px;
-      color: #e5e7eb;
-    }
-
-    .era-hint-label {
-      font-size: 12px;
-      color: #facc15;
-      margin-bottom: 1px;
-    }
-
-    .era-hint-text {
+    .studio-desc {
+      font-size: 13px;
+      color: var(--text-sub);
       line-height: 1.7;
+      margin-bottom: 10px;
     }
 
-    @media (max-width: 480px) {
-      .app {
-        padding: 8px 8px 20px;
-      }
-      #view-lobby,
-      #view-studio,
-      #view-card {
-        padding: 9px;
-      }
-      .lobby-card {
-        padding: 9px 9px 10px;
-      }
+    .btn-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-bottom: 4px;
+    }
+    .btn-main, .btn-ghost {
+      border-radius: 999px;
+      border: none;
+      font-size: 13px;
+      padding: 7px 14px;
+      cursor: pointer;
+      white-space: nowrap;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+      transition: background 0.12s ease-out, color 0.12s ease-out, border-color 0.12s ease-out, transform 0.08s ease-out;
+    }
+    .btn-main {
+      background: linear-gradient(135deg, var(--accent), #4ade80);
+      color: #022c22;
+      font-weight: 560;
+      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.4);
+    }
+    .btn-main:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 8px 22px rgba(0, 0, 0, 0.45);
+    }
+    .btn-main:active {
+      transform: translateY(0);
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.45);
+    }
+    .btn-ghost {
+      border: 1px solid var(--border-soft);
+      background: rgba(15, 23, 42, 0.9);
+      color: var(--text-sub);
+    }
+    .btn-ghost:hover {
+      border-color: var(--accent);
+      color: var(--text-main);
+    }
+
+    .small-hint {
+      font-size: 11px;
+      color: var(--text-sub);
+      line-height: 1.6;
+      margin-top: 4px;
+    }
+
+    .card-list {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      max-height: calc(100vh - 150px);
+      overflow-y: auto;
+      padding-right: 2px;
+    }
+    @media (max-width: 767px) {
+      .card-list { max-height: none; }
+    }
+    .card {
+      border-radius: 12px;
+      border: 1px solid var(--border-soft);
+      background: rgba(15, 23, 42, 0.9);
+      padding: 9px 10px 9px;
+      font-size: 13px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    .card-header-line {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: 4px;
+    }
+    .card-title {
+      font-size: 13px;
+      font-weight: 560;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .card-meta {
+      font-size: 11px;
+      color: var(--text-sub);
+      white-space: nowrap;
+    }
+    .card-content {
+      font-size: 13px;
+      line-height: 1.6;
+      max-height: 4.4em;
+      overflow: hidden;
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+    .card-footer {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+      gap: 4px;
+      margin-top: 4px;
+    }
+    .btn-small {
+      border-radius: 999px;
+      border: 1px solid var(--border-soft);
+      background: transparent;
+      color: var(--text-sub);
+      font-size: 11px;
+      padding: 3px 8px;
+      cursor: pointer;
+    }
+    .btn-small:hover {
+      border-color: var(--accent);
+      color: var(--text-main);
+    }
+    .btn-small-danger {
+      border-color: rgba(248, 113, 113, 0.6);
+      color: #fecaca;
+    }
+    .empty-hint {
+      font-size: 12px;
+      color: var(--text-sub);
+      padding: 6px 4px;
+    }
+
+    .footer-info {
+      margin-top: 10px;
+      font-size: 11px;
+      color: var(--text-sub);
+      line-height: 1.6;
+    }
+
+    /* 模态框 */
+    .modal-wrap {
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 23, 42, 0.78);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 50;
+      padding: 10px;
+    }
+    .modal-wrap.show {
+      display: flex;
+    }
+    .modal {
+      width: 100%;
+      max-width: 580px;
+      max-height: 90vh;
+      overflow-y: auto;
+      background: #020617;
+      border-radius: 14px;
+      border: 1px solid var(--border-soft);
+      padding: 12px 13px 13px;
+    }
+    .modal-title {
+      font-size: 15px;
+      font-weight: 600;
+      margin-bottom: 6px;
+    }
+    .modal-desc {
+      font-size: 12px;
+      color: var(--text-sub);
+      line-height: 1.6;
+      margin-bottom: 8px;
+    }
+    .modal-field {
+      margin-bottom: 8px;
+    }
+    .modal-label {
+      font-size: 12px;
+      margin-bottom: 2px;
+    }
+    .modal-input, .modal-textarea, .modal-select {
+      width: 100%;
+      border-radius: 8px;
+      border: 1px solid var(--border-soft);
+      background: rgba(15, 23, 42, 0.98);
+      color: var(--text-main);
+      padding: 6px 8px;
+      font-size: 13px;
+    }
+    .modal-textarea {
+      min-height: 80px;
+      resize: vertical;
+      line-height: 1.6;
+    }
+    .modal-btn-row {
+      display: flex;
+      justify-content: flex-end;
+      gap: 6px;
+      margin-top: 4px;
+      flex-wrap: wrap;
+    }
+    .btn-secondary, .btn-primary {
+      border-radius: 999px;
+      border: 1px solid var(--border-soft);
+      padding: 6px 14px;
+      font-size: 13px;
+      cursor: pointer;
+      background: transparent;
+      color: var(--text-sub);
+    }
+    .btn-secondary:hover {
+      border-color: var(--accent);
+      color: var(--text-main);
+    }
+    .btn-primary {
+      border-color: var(--accent);
+      background: linear-gradient(135deg, var(--accent), #4ade80);
+      color: #022c22;
+      font-weight: 560;
+    }
+    .btn-primary:hover {
+      filter: brightness(1.05);
+    }
+
+    /* 听音写谱专用 */
+    .tone-row {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin-bottom: 6px;
+      font-size: 13px;
+    }
+    .tone-label {
+      font-size: 12px;
+    }
+    .melody-display {
+      font-family: "SF Mono", Menlo, Consolas, monospace;
+      font-size: 13px;
+      background: rgba(15, 23, 42, 0.98);
+      border-radius: 8px;
+      border: 1px solid var(--border-soft);
+      padding: 6px 8px;
+      min-height: 40px;
+      line-height: 1.6;
+      white-space: pre-wrap;
+      word-break: break-word;
+      margin-bottom: 6px;
+    }
+    .melody-pad {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 6px;
+      margin-bottom: 6px;
+    }
+    .btn-pad {
+      border-radius: 999px;
+      border: 1px solid var(--border-soft);
+      background: rgba(15, 23, 42, 0.96);
+      color: var(--text-main);
+      font-size: 13px;
+      padding: 6px 0;
+      cursor: pointer;
+    }
+    .btn-pad:hover {
+      border-color: var(--accent);
     }
   </style>
 </head>
 <body>
-  <div class="app">
-    <header>
-      <div class="header-row">
-        <div class="header-main">
-          <div class="app-title">LifeTraverse · 老年工作室</div>
-          <div class="app-subtitle">用记录，留住越过的痕迹。</div>
-        </div>
-        <div class="persona" onclick="editPersonaName()">
-          <div class="persona-avatar" id="persona-avatar">师</div>
-          <div class="persona-name" id="persona-name">这位老师</div>
+  <main class="app">
+    <header class="top-bar">
+      <div>
+        <div class="top-title">老年工作室</div>
+        <div class="top-subtitle">用记录，留住越过的痕迹。</div>
+      </div>
+      <div class="avatar">
+        <div class="avatar-circle">师</div>
+        <div>
+          <div class="avatar-text-main">工作室老师</div>
+          <div class="avatar-text-sub">你是这里的主人</div>
         </div>
       </div>
     </header>
 
-    <main>
-      <section id="view-lobby">
-        <div class="lobby-header-text"></div>
-        <div class="lobby-grid">
-          <div class="lobby-card" onclick="openStudio('life')">
-            <div class="lobby-card-title">生活</div>
-            <div class="lobby-card-desc">今天与从前的点滴。</div>
-          </div>
-          <div class="lobby-card" onclick="openStudio('art')">
-            <div class="lobby-card-title">艺术</div>
-            <div class="lobby-card-desc">作品和灵感都算数。</div>
-          </div>
-          <div class="lobby-card" onclick="openStudio('thought')">
-            <div class="lobby-card-title">思想</div>
-            <div class="lobby-card-desc">写清楚你的一套想法。</div>
-          </div>
-          <div class="lobby-card" onclick="openStudio('tech')">
-            <div class="lobby-card-title">技艺</div>
-            <div class="lobby-card-desc">把你的拿手本领写下来。</div>
-          </div>
-        </div>
-        <div class="lobby-newcard">
-          <button class="btn btn-primary" onclick="startNewCardFromLobby()">
-            新建卡片
-          </button>
-          <p>先记下来，之后再分类。</p>
-        </div>
-      </section>
+    <section class="studio-tabs">
+      <button class="studio-tab" data-studio="life"><span>生活</span></button>
+      <button class="studio-tab" data-studio="art"><span>艺术</span></button>
+      <button class="studio-tab" data-studio="idea"><span>思想</span></button>
+      <button class="studio-tab" data-studio="tech"><span>技术</span></button>
+    </section>
 
-      <section id="view-studio">
-        <div class="studio-top-bar">
-          <div class="studio-back" onclick="goToLobby()">
-            <span>←</span> 返回大厅
-          </div>
+    <section class="layout">
+      <div class="panel panel-left">
+        <div class="studio-name" id="studioName">生活工作室</div>
+        <div class="studio-fullname" id="studioFullName">精彩生活 / 温馨回忆</div>
+        <div class="studio-desc" id="studioDesc">
+          随手记一件这一次想留住的小事，不用写长篇，慢慢也会积累出一份可以翻看的生活记录。
         </div>
-        <div id="studio-container"></div>
-      </section>
 
-      <section id="view-card">
-        <div class="card-page-back" onclick="backToStudio()">
-          <span>←</span> 返回工作室
+        <div class="btn-row" id="studioButtons">
+          <!-- 按当前工作室渲染按钮 -->
         </div>
-        <div id="card-container"></div>
-      </section>
-    </main>
+
+        <div class="small-hint" id="studioHint">
+          提示：每一张卡片都是一块小砖，写完可以放一放，以后再回来接着补。
+        </div>
+      </div>
+
+      <div class="panel panel-right">
+        <div class="card-list" id="cardList"></div>
+        <div class="empty-hint" id="emptyHint" style="display:none;">
+          这一间还空着，可以先新建一张卡片试一试。
+        </div>
+        <div class="footer-info">
+          说明：这里只帮你记录和整理，不做医疗、理财、法律等决策。需要专业意见时，请线下咨询医生、律师或理财人员。
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- 新建 / 编辑卡片 -->
+  <div class="modal-wrap" id="modalEdit">
+    <div class="modal">
+      <div class="modal-title" id="modalEditTitle">编辑卡片</div>
+      <div class="modal-field">
+        <div class="modal-label">标题（可留空）</div>
+        <input id="editTitle" class="modal-input" placeholder="给这张卡片起个名字（可不填）" />
+      </div>
+      <div class="modal-field">
+        <div class="modal-label">内容</div>
+        <textarea id="editContent" class="modal-textarea" placeholder="可以分段写，慢慢补。"></textarea>
+      </div>
+      <div class="modal-btn-row">
+        <button class="btn-secondary" onclick="closeModal('modalEdit')">取消</button>
+        <button class="btn-primary" onclick="saveEdit()">保存</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 生活：这一次小卡 -->
+  <div class="modal-wrap" id="modalOnce">
+    <div class="modal">
+      <div class="modal-title">这一次小卡</div>
+      <div class="modal-desc">
+        不按“今天”“打卡”来算，只是记一件这一次想留住的小事，写完就放在这里等你以后再看。
+      </div>
+      <div class="modal-field">
+        <div class="modal-label">这一次，我想记住的一件小事：</div>
+        <textarea id="onceEvent" class="modal-textarea" placeholder="例如：跟谁、在哪儿、发生了什么。"></textarea>
+      </div>
+      <div class="modal-field">
+        <div class="modal-label">这件事里，让我最在意的一个细节：</div>
+        <textarea id="onceDetail" class="modal-textarea" placeholder="一句话、一个表情、一段对话都行。"></textarea>
+      </div>
+      <div class="modal-field">
+        <div class="modal-label">以后再看到这张卡时，我希望自己能想起：</div>
+        <textarea id="onceFuture" class="modal-textarea" placeholder="写一句话给以后再看到这张卡的自己。"></textarea>
+      </div>
+      <div class="modal-btn-row">
+        <button class="btn-secondary" onclick="closeModal('modalOnce')">取消</button>
+        <button class="btn-primary" onclick="submitOnceCard()">生成卡片</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 生活：补一补细节 -->
+  <div class="modal-wrap" id="modalDetail">
+    <div class="modal">
+      <div class="modal-title">补一补细节</div>
+      <div class="modal-desc">
+        只是在原来内容的基础上补几笔，让这件事以后更好回忆。不会改动你之前写的部分。
+      </div>
+      <div class="modal-field">
+        <div class="modal-label">大概是哪个阶段？（年龄 / 年代 / 大致年份）</div>
+        <input id="detailWhen" class="modal-input" placeholder="例如：25 岁左右 / 90 年代初 / 2010 年前后…" />
+      </div>
+      <div class="modal-field">
+        <div class="modal-label">主要是在什么地方 / 环境？</div>
+        <input id="detailWhere" class="modal-input" placeholder="城市、乡镇，或单位类型，例如：油田、学校、公司…" />
+      </div>
+      <div class="modal-field">
+        <div class="modal-label">如果要挑一件最典型的小事，是什么？</div>
+        <textarea id="detailEvent" class="modal-textarea" placeholder="用两三句话写一写。"></textarea>
+      </div>
+      <div class="modal-btn-row">
+        <button class="btn-secondary" onclick="closeModal('modalDetail')">取消</button>
+        <button class="btn-primary" onclick="submitDetail()">添加到这张卡</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 艺术：记录一段旋律 -->
+  <div class="modal-wrap" id="modalMelody">
+    <div class="modal">
+      <div class="modal-title">记录一段旋律</div>
+      <div class="modal-desc">
+        不需要专业，只是把你哼出来的旋律，先记成简谱数字，留一份种子在这里。
+      </div>
+      <div class="modal-field">
+        <div class="tone-row">
+          <span class="tone-label">调性：</span>
+          <select id="melodyKey" class="modal-select">
+            <option value="C">C 调</option>
+            <option value="D">D 调</option>
+            <option value="E">E 调</option>
+            <option value="F">F 调</option>
+            <option value="G">G 调</option>
+            <option value="A">A 调</option>
+            <option value="B">B 调</option>
+          </select>
+        </div>
+      </div>
+      <div class="modal-field">
+        <div class="modal-label">当前简谱：</div>
+        <div id="melodyDisplay" class="melody-display">（点击下面的数字按钮开始记录）</div>
+      </div>
+      <div class="modal-field">
+        <div class="modal-label">点击数字按钮记录音高：</div>
+        <div class="melody-pad">
+          <button class="btn-pad" onclick="addMelody('1')">1</button>
+          <button class="btn-pad" onclick="addMelody('2')">2</button>
+          <button class="btn-pad" onclick="addMelody('3')">3</button>
+          <button class="btn-pad" onclick="addMelody('4')">4</button>
+          <button class="btn-pad" onclick="addMelody('5')">5</button>
+          <button class="btn-pad" onclick="addMelody('6')">6</button>
+          <button class="btn-pad" onclick="addMelody('7')">7</button>
+          <button class="btn-pad" onclick="addMelody('.')">·</button>
+          <button class="btn-pad" onclick="melodyBackspace()">退格</button>
+          <button class="btn-pad" onclick="melodyClear()">清空</button>
+        </div>
+      </div>
+      <div class="modal-field">
+        <div class="modal-label">简单写一句当时的场景或心情（可选）：</div>
+        <textarea id="melodyNote" class="modal-textarea" placeholder="例如：晚上在阳台随手哼的一个小调子。"></textarea>
+      </div>
+      <div class="modal-btn-row">
+        <button class="btn-secondary" onclick="closeModal('modalMelody')">取消</button>
+        <button class="btn-primary" onclick="submitMelody()">保存为卡片</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 艺术：小说骨架（三问） -->
+  <div class="modal-wrap" id="modalStory">
+    <div class="modal">
+      <div class="modal-title">小说骨架 · 三问</div>
+      <div class="modal-desc">
+        先不用写长篇，只是把这一篇的大致骨架搭出来，后面你可以慢慢往里填。
+      </div>
+      <div class="modal-field">
+        <div class="modal-label">这一次想写的是：</div>
+        <input id="storyWhat" class="modal-input" placeholder="一个人 / 一件事 / 一段关系 / 一次改变…" />
+      </div>
+      <div class="modal-field">
+        <div class="modal-label">大概发生在什么时候、什么地方？</div>
+        <textarea id="storyWhenWhere" class="modal-textarea" placeholder="例如：90 年代初，在东营的一家小饭馆里…"></textarea>
+      </div>
+      <div class="modal-field">
+        <div class="modal-label">我最想写清楚的冲突或心情是什么？</div>
+        <textarea id="storyConflict" class="modal-textarea" placeholder="例如：那次谈话之后，我对自己整个人生的看法变了。"></textarea>
+      </div>
+      <div class="modal-btn-row">
+        <button class="btn-secondary" onclick="closeModal('modalStory')">取消</button>
+        <button class="btn-primary" onclick="submitStory()">生成骨架卡</button>
+      </div>
+    </div>
   </div>
 
   <script>
-    (function (global) {
-      const YEAR_EVENTS = [
-        { year: 1960, label: "三年困难后的恢复期", summary: "很多家庭都在慢慢从三年困难走出来，物资紧张、记忆很深。" },
-        { year: 1978, label: "改革开放初期", summary: "国家开始改革开放，很多人第一次听说“个体户”“下海”“特区”这些说法。" },
-        { year: 1984, label: "城市改革加速", summary: "城市里开始出现更多个体小摊、小店，大家对“多挣点钱”有了新的想法。" },
-        { year: 1988, label: "物价上涨与国企改革", summary: "那几年物价变化明显，很多人记得“涨价风波”，国企改革、合同制也慢慢铺开。" },
-        { year: 1989, label: "变动中的年代", summary: "社会气氛比较复杂，很多人对未来既有期待也有不确定感。" },
-        { year: 1992, label: "南巡讲话后的热潮", summary: "市场气息一下子浓起来，沿海城市发展很快，很多人开始下海做生意。" },
-        { year: 1998, label: "长江洪水与国企改制", summary: "抗洪让全国印象深刻，同时国企减员、分流开始影响很多家庭。" },
-        { year: 2003, label: "非典那一年", summary: "大家第一次经历大范围传染病防控，学校停课、单位停工，记忆非常深刻。" },
-        { year: 2008, label: "汶川地震与北京奥运", summary: "一场大地震让全国为四川流泪，几个月后北京奥运又点燃了盛大自豪。" },
-        { year: 2020, label: "疫情之年", summary: "全国大范围居家、防控，很多人的生活节奏被彻底打乱，也留下了很多特别的记忆。" }
-      ];
-
-      function extractYearFromText(text) {
-        if (!text) return null;
-        const m = text.match(/(19[5-9]\d|20[0-2]\d)/);
-        if (!m) return null;
-        const year = parseInt(m[1], 10);
-        if (isNaN(year)) return null;
-        return year;
-      }
-
-      function findYearEvent(year) {
-        if (!year) return null;
-        let ev = YEAR_EVENTS.find(e => e.year === year);
-        if (ev) return ev;
-        ev = YEAR_EVENTS.find(e => Math.abs(e.year - year) === 1);
-        return ev || null;
-      }
-
-      function buildEraHint(year, event) {
-        if (!event) return null;
-        const y = event.year;
-        const label = event.label || "";
-        const summary = event.summary || "";
-        const hintText =
-          `你说的是 ${y} 年左右。那是“${label}”的阶段，` +
-          `${summary} 我们先把你当时那件事记清楚。`;
-        return { year: y, label, hintText };
-      }
-
-      const EraEngine = {
-        applyToCard(card) {
-          try {
-            if (!card || card.studio !== "life") return card;
-            if (card.eraHintUsed) return card;
-            const text = `${card.title || ""} ${card.content || ""}`.replace(/\s+/g, " ").trim();
-            const year = extractYearFromText(text);
-            const ev = findYearEvent(year);
-            if (!ev) {
-              card.eraHintUsed = true;
-              return card;
-            }
-            const hint = buildEraHint(year, ev);
-            if (hint) {
-              card.eraHint = hint;
-              card.eraHintUsed = true;
-            }
-            return card;
-          } catch (e) {
-            console.warn("EraEngine 处理失败：", e);
-            return card;
-          }
-        }
-      };
-
-      global.EraEngine = EraEngine;
-    })(window);
-  </script>
-
-  <script>
-    const PLAN_LEVEL = "FREE";
-    const STORAGE_KEY = "elderStudio_v054";
-
-    const STUDIOS = {
+    const STORAGE_KEY = "lt_elder_cards_v06";
+    const STUDIO_CONFIG = {
       life: {
-        key: "life",
-        lobbyTitle: "生活",
-        fullTitle: "生活工作室",
-        subtitle: "精彩生活 / 温馨回忆。",
-        welcome: "最近哪一件事，你最想留下？",
-        listTitle: "生活工作室里的卡片"
+        name: "生活工作室",
+        fullName: "精彩生活 / 温馨回忆",
+        desc: "随手记一件这一次想留住的小事，不用写长篇，慢慢也会积累出一份可以翻看的生活记录。",
+        hint: "可以从一件小事开始：今天或最近发生，让你有点在意的那一次。",
+        buttons: [
+          { type: "main", label: "新建卡片", handler: "openNewCard" },
+          { type: "ghost", label: "随手记一张小卡", handler: "openOnceModal" }
+        ]
       },
       art: {
-        key: "art",
-        lobbyTitle: "艺术",
-        fullTitle: "艺术工作室",
-        subtitle: "书画、摄影、诗文，都算作品。",
-        welcome: "先写一件你最近完成或正在做的作品。",
-        listTitle: "艺术工作室里的卡片"
+        name: "张扬艺术工作室",
+        fullName: "作品 · 旋律 · 小说骨架",
+        desc: "写诗、记旋律、留作品草稿，不要求完美，只是让这些东西有一个被安放的地方。",
+        hint: "哪怕只写一句、记一小段旋律，也比完全没留下要好得多。",
+        buttons: [
+          { type: "main", label: "新建作品卡", handler: "openNewCard" },
+          { type: "ghost", label: "记录一段旋律", handler: "openMelodyModal" },
+          { type: "ghost", label: "小说骨架（三问）", handler: "openStoryModal" }
+        ]
       },
-      thought: {
-        key: "thought",
-        lobbyTitle: "思想",
-        fullTitle: "思想工作室",
-        subtitle: "这里只帮你写清楚，不做裁判。",
-        welcome: "先写 1–3 条你最想坚持的观点。",
-        listTitle: "思想工作室里的卡片"
+      idea: {
+        name: "理论思想工作室",
+        fullName: "人生观 / 教育观 / 信仰体会",
+        desc: "把对人生、教育、社团或信仰的想法写清楚，不求统一标准，只给自己一个条理分明的版本。",
+        hint: "可以从一个小主题开始：比如“钱”“孩子”“工作”“信仰中的某一个问题”。",
+        buttons: [
+          { type: "main", label: "新建卡片", handler: "openNewCard" }
+        ]
       },
       tech: {
-        key: "tech",
-        lobbyTitle: "技艺",
-        fullTitle: "技艺工作室",
-        subtitle: "把你的专业经验、拿手本领写下来。",
-        welcome: "先选一件你最熟悉的工作或项目来写。",
-        listTitle: "技艺工作室里的卡片"
+        name: "技术传承工作室",
+        fullName: "项目经验 / 技术备忘录",
+        desc: "一生做过的项目、积累的技术经验，可以慢慢拆成一张张卡片，留给后来人参考。",
+        hint: "可以先写一件你最想留下的项目，再慢慢把细节补进去。",
+        buttons: [
+          { type: "main", label: "新建卡片", handler: "openNewCard" }
+        ]
       }
     };
 
-    const appState = {
-      activeView: "lobby",
-      activeStudio: null,
-      cards: [],
-      currentCard: null,
-      personaName: "这位老师"
-    };
+    let cards = [];
+    let currentStudio = "life";
+    let editingCardId = null;
+    let detailTargetId = null;
+    let melodyBuffer = "";
 
-    function loadState() {
+    function loadCards() {
       try {
         const raw = localStorage.getItem(STORAGE_KEY);
-        if (!raw) return;
-        const saved = JSON.parse(raw);
-        if (saved && Array.isArray(saved.cards)) {
-          appState.cards = saved.cards;
-        }
-        if (saved && typeof saved.personaName === "string") {
-          appState.personaName = saved.personaName || "这位老师";
-        }
-      } catch (e) {
-        console.warn("加载本地数据失败：", e);
-      }
+        if (!raw) return [];
+        const arr = JSON.parse(raw);
+        if (Array.isArray(arr)) return arr;
+      } catch (e) {}
+      return [];
     }
 
-    function saveState() {
+    function saveCards() {
       try {
-        localStorage.setItem(STORAGE_KEY, JSON.stringify({
-          cards: appState.cards,
-          personaName: appState.personaName
-        }));
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(cards));
+      } catch (e) {}
+    }
+
+    function formatTime(ts) {
+      try {
+        const d = new Date(ts);
+        const y = d.getFullYear();
+        const m = String(d.getMonth() + 1).padStart(2, "0");
+        const day = String(d.getDate()).padStart(2, "0");
+        const hh = String(d.getHours()).padStart(2, "0");
+        const mm = String(d.getMinutes()).padStart(2, "0");
+        return `${y}-${m}-${day} ${hh}:${mm}`;
       } catch (e) {
-        console.warn("保存本地数据失败：", e);
+        return "";
       }
     }
 
-    function escapeHtml(str) {
-      if (!str) return "";
-      return str
-        .replace(/&/g, "&amp;")
-        .replace(/</g, "&lt;")
-        .replace(/>/g, "&gt;/")
-        .replace(/"/g, "&quot;")
-        .replace(/'/g, "&#039;");
+    function setCurrentStudio(studio) {
+      if (!STUDIO_CONFIG[studio]) studio = "life";
+      currentStudio = studio;
+
+      // tab 高亮
+      document.querySelectorAll(".studio-tab").forEach(btn => {
+        const s = btn.dataset.studio;
+        btn.classList.toggle("active", s === studio);
+      });
+
+      // 左侧信息
+      const conf = STUDIO_CONFIG[studio];
+      document.getElementById("studioName").textContent = conf.name;
+      document.getElementById("studioFullName").textContent = conf.fullName;
+      document.getElementById("studioDesc").textContent = conf.desc;
+      document.getElementById("studioHint").textContent = conf.hint;
+
+      const btnRow = document.getElementById("studioButtons");
+      btnRow.innerHTML = "";
+      conf.buttons.forEach(b => {
+        const el = document.createElement("button");
+        el.className = b.type === "main" ? "btn-main" : "btn-ghost";
+        el.textContent = b.label;
+        el.addEventListener("click", () => {
+          if (b.handler === "openNewCard") {
+            openNewCard();
+          } else if (b.handler === "openOnceModal") {
+            openOnceModal();
+          } else if (b.handler === "openMelodyModal") {
+            openMelodyModal();
+          } else if (b.handler === "openStoryModal") {
+            openStoryModal();
+          }
+        });
+        btnRow.appendChild(el);
+      });
+
+      renderCardList();
     }
 
-    function renderPersona() {
-      const nameEl = document.getElementById("persona-name");
-      const avatarEl = document.getElementById("persona-avatar");
-      if (!nameEl || !avatarEl) return;
-      const name = (appState.personaName || "这位老师").trim() || "这位老师";
-      nameEl.textContent = name;
-      const pure = name.replace(/\s+/g, "");
-      avatarEl.textContent = pure ? pure[0] : "师";
-    }
-
-    function editPersonaName() {
-      const current = appState.personaName && appState.personaName !== "这位老师"
-        ? appState.personaName
-        : "";
-      const input = prompt("我以后怎么称呼你比较合适？（例如：张老师、王师傅）", current || "");
-      if (!input) return;
-      appState.personaName = input.trim() || "这位老师";
-      saveState();
-      renderPersona();
-    }
-
-    function goToLobby() {
-      appState.activeView = "lobby";
-      appState.activeStudio = null;
-      appState.currentCard = null;
-      renderAll();
-    }
-
-    function openStudio(studioKey) {
-      if (!STUDIOS[studioKey]) return;
-      appState.activeView = "studio";
-      appState.activeStudio = studioKey;
-      appState.currentCard = null;
-      renderAll();
-    }
-
-    function startNewCardFromLobby() {
-      if (!appState.activeStudio) {
-        appState.activeStudio = "life";
-      }
-      openStudio(appState.activeStudio);
-      openNewCard(appState.activeStudio);
-    }
-
-    function openNewCard(studioKey) {
-      if (!STUDIOS[studioKey]) return;
-      appState.activeView = "card";
-      appState.currentCard = {
-        studio: studioKey,
-        cardId: null,
-        mode: "edit",
-        draftTitle: "",
-        draftContent: ""
-      };
-      renderAll();
-    }
-
-    function openCard(studioKey, cardId) {
-      const card = appState.cards.find(c => c.id === cardId && c.studio === studioKey);
-      if (!card) return;
-      appState.activeView = "card";
-      appState.activeStudio = studioKey;
-      appState.currentCard = {
-        studio: studioKey,
-        cardId: cardId,
-        mode: "view"
-      };
-      renderAll();
-    }
-
-    function backToStudio() {
-      if (!appState.activeStudio) {
-        goToLobby();
+    function renderCardList() {
+      const listEl = document.getElementById("cardList");
+      listEl.innerHTML = "";
+      const studioCards = cards
+        .filter(c => c.studio === currentStudio)
+        .sort((a, b) => b.createdAt - a.createdAt);
+      const emptyHint = document.getElementById("emptyHint");
+      if (studioCards.length === 0) {
+        emptyHint.style.display = "block";
         return;
-      }
-      appState.activeView = "studio";
-      appState.currentCard = null;
-      renderAll();
-    }
-
-    function startEditCurrentCard() {
-      const cc = appState.currentCard;
-      if (!cc) return;
-      const card = appState.cards.find(c => c.id === cc.cardId && c.studio === cc.studio);
-      if (!card) return;
-      appState.currentCard = {
-        studio: cc.studio,
-        cardId: cc.cardId,
-        mode: "edit",
-        draftTitle: card.title || "",
-        draftContent: card.content || ""
-      };
-      renderAll();
-    }
-
-    function cancelEditCard() {
-      const cc = appState.currentCard;
-      if (!cc) return;
-      if (cc.cardId === null) {
-        backToStudio();
       } else {
-        appState.currentCard = {
-          studio: cc.studio,
-          cardId: cc.cardId,
-          mode: "view"
-        };
-        renderAll();
+        emptyHint.style.display = "none";
       }
+
+      studioCards.forEach(card => {
+        const cardEl = document.createElement("div");
+        cardEl.className = "card";
+
+        const headerLine = document.createElement("div");
+        headerLine.className = "card-header-line";
+
+        const titleEl = document.createElement("div");
+        titleEl.className = "card-title";
+        titleEl.textContent = card.title || "未命名卡片";
+
+        const metaEl = document.createElement("div");
+        metaEl.className = "card-meta";
+        metaEl.textContent = formatTime(card.createdAt);
+
+        headerLine.appendChild(titleEl);
+        headerLine.appendChild(metaEl);
+
+        const contentEl = document.createElement("div");
+        contentEl.className = "card-content";
+        contentEl.textContent = (card.content || "").trim();
+
+        const footer = document.createElement("div");
+        footer.className = "card-footer";
+
+        const btnEdit = document.createElement("button");
+        btnEdit.className = "btn-small";
+        btnEdit.textContent = "打开 / 编辑";
+        btnEdit.addEventListener("click", () => openEdit(card.id));
+        footer.appendChild(btnEdit);
+
+        if (currentStudio === "life") {
+          const btnDetail = document.createElement("button");
+          btnDetail.className = "btn-small";
+          btnDetail.textContent = "补一补细节";
+          btnDetail.addEventListener("click", () => openDetailModal(card.id));
+          footer.appendChild(btnDetail);
+        }
+
+        const btnDelete = document.createElement("button");
+        btnDelete.className = "btn-small btn-small-danger";
+        btnDelete.textContent = "删除";
+        btnDelete.addEventListener("click", () => deleteCard(card.id));
+        footer.appendChild(btnDelete);
+
+        cardEl.appendChild(headerLine);
+        cardEl.appendChild(contentEl);
+        cardEl.appendChild(footer);
+
+        listEl.appendChild(cardEl);
+      });
     }
 
-    function saveCurrentCard() {
-      const cc = appState.currentCard;
-      if (!cc || cc.mode !== "edit") return;
-      const titleInput = document.getElementById("card-edit-title");
-      const contentInput = document.getElementById("card-edit-content");
-      if (!titleInput || !contentInput) return;
+    function openNewCard() {
+      editingCardId = null;
+      document.getElementById("modalEditTitle").textContent = "新建卡片";
+      document.getElementById("editTitle").value = "";
+      document.getElementById("editContent").value = "";
+      openModal("modalEdit");
+    }
 
-      const title = (titleInput.value || "").trim();
-      const content = (contentInput.value || "").trim();
+    function openEdit(id) {
+      const card = cards.find(c => c.id === id);
+      if (!card) return;
+      editingCardId = id;
+      document.getElementById("modalEditTitle").textContent = "编辑卡片";
+      document.getElementById("editTitle").value = card.title || "";
+      document.getElementById("editContent").value = card.content || "";
+      openModal("modalEdit");
+    }
 
-      if (!title || !content) {
-        alert("标题和内容都要有一点文字，保存前先补一补。");
+    function saveEdit() {
+      const title = document.getElementById("editTitle").value.trim();
+      const content = document.getElementById("editContent").value;
+      if (!content.trim()) {
+        alert("至少写一点内容，再保存这张卡片。");
         return;
       }
-
-      let card;
-      if (cc.cardId === null) {
-        card = {
-          id: cc.studio + "-" + Date.now(),
-          studio: cc.studio,
-          title: title,
-          content: content,
-          eraHint: null,
-          eraHintUsed: false,
-          createdAt: new Date().toISOString()
-        };
-        if (card.studio === "life" && window.EraEngine) {
-          card = window.EraEngine.applyToCard(card);
+      const now = Date.now();
+      if (editingCardId) {
+        const idx = cards.findIndex(c => c.id === editingCardId);
+        if (idx >= 0) {
+          cards[idx] = {
+            ...cards[idx],
+            title,
+            content,
+            updatedAt: now
+          };
         }
-        appState.cards.unshift(card);
-        appState.currentCard = {
-          studio: cc.studio,
-          cardId: card.id,
-          mode: "view"
-        };
       } else {
-        const idx = appState.cards.findIndex(c => c.id === cc.cardId && c.studio === cc.studio);
-        if (idx === -1) return;
-        card = appState.cards[idx];
-        card.title = title;
-        card.content = content;
-        if (card.studio === "life" && window.EraEngine && !card.eraHint) {
-          card.eraHintUsed = false;
-          card = window.EraEngine.applyToCard(card);
-          appState.cards[idx] = card;
-        }
-        appState.currentCard = {
-          studio: cc.studio,
-          cardId: card.id,
-          mode: "view"
-        };
+        const id = "c_" + now + "_" + Math.random().toString(16).slice(2);
+        cards.push({
+          id,
+          studio: currentStudio,
+          title,
+          content,
+          createdAt: now,
+          updatedAt: now,
+          templateType: "plain"
+        });
       }
-
-      saveState();
-      renderAll();
+      saveCards();
+      closeModal("modalEdit");
+      renderCardList();
     }
 
-    function autoResize(textarea) {
-      if (!textarea) return;
-      textarea.style.height = "auto";
-      textarea.style.height = textarea.scrollHeight + "px";
+    function deleteCard(id) {
+      if (!confirm("确定要删除这张卡片吗？这一步目前不能撤销。")) return;
+      cards = cards.filter(c => c.id !== id);
+      saveCards();
+      renderCardList();
     }
 
-    function renderLobby() {
-      const lobby = document.getElementById("view-lobby");
-      if (!lobby) return;
-      lobby.style.display = (appState.activeView === "lobby") ? "block" : "none";
+    function openModal(id) {
+      const el = document.getElementById(id);
+      if (el) el.classList.add("show");
+    }
+    function closeModal(id) {
+      const el = document.getElementById(id);
+      if (el) el.classList.remove("show");
+      if (id === "modalDetail") {
+        detailTargetId = null;
+      } else if (id === "modalMelody") {
+        melodyBuffer = "";
+        updateMelodyDisplay();
+      }
     }
 
-    function renderStudio() {
-      const view = document.getElementById("view-studio");
-      const container = document.getElementById("studio-container");
-      if (!view || !container) return;
+    // 生活：这一次小卡
+    function openOnceModal() {
+      document.getElementById("onceEvent").value = "";
+      document.getElementById("onceDetail").value = "";
+      document.getElementById("onceFuture").value = "";
+      openModal("modalOnce");
+    }
 
-      if (appState.activeView !== "studio" || !appState.activeStudio) {
-        view.style.display = "none";
+    function submitOnceCard() {
+      const e1 = document.getElementById("onceEvent").value.trim();
+      const e2 = document.getElementById("onceDetail").value.trim();
+      const e3 = document.getElementById("onceFuture").value.trim();
+      if (!e1 && !e2 && !e3) {
+        alert("至少写一点内容，再生成这张小卡。");
         return;
       }
-
-      const studio = STUDIOS[appState.activeStudio];
-      if (!studio) {
-        view.style.display = "none";
-        return;
-      }
-
-      view.style.display = "block";
-
-      const cards = appState.cards.filter(c => c.studio === studio.key);
-      const listHtml = cards.length
-        ? cards
-            .map(c => {
-              const created = (c.createdAt || "").slice(0, 10);
-              const snippet = (c.content || "").replace(/\s+/g, " ").slice(0, 40);
-              return `
-                <div class="card-item" onclick="openCard('${studio.key}','${c.id}')">
-                  <div class="card-title">${escapeHtml(c.title)}</div>
-                  <div class="card-snippet">${escapeHtml(snippet)}</div>
-                  <div class="card-meta">${created}</div>
-                </div>
-              `;
-            })
-            .join("")
-        : '<div class="studio-empty">这里还没有卡片。你可以先新建一张。</div>';
-
-      container.innerHTML = `
-        <div class="studio-header">
-          <div class="studio-title">${studio.fullTitle}</div>
-          <div class="studio-subtitle">${studio.subtitle}</div>
-          <div class="studio-welcome">${studio.welcome}</div>
-        </div>
-        <div class="studio-actions">
-          <button class="btn btn-primary" onclick="openNewCard('${studio.key}')">新建卡片</button>
-        </div>
-        <div class="studio-list">
-          <div class="studio-list-title">${studio.listTitle}</div>
-          ${listHtml}
-        </div>
-      `;
+      const now = Date.now();
+      let content = "【这一次】\n";
+      if (e1) content += "· 我想记住的一件小事：\n" + e1 + "\n\n";
+      if (e2) content += "· 让我在意的一个细节：\n" + e2 + "\n\n";
+      if (e3) content += "· 以后再看到时，希望自己能想起：\n" + e3 + "\n";
+      const title = "这一次小卡";
+      const id = "c_" + now + "_" + Math.random().toString(16).slice(2);
+      cards.push({
+        id,
+        studio: "life",
+        title,
+        content,
+        createdAt: now,
+        updatedAt: now,
+        templateType: "once_note"
+      });
+      saveCards();
+      closeModal("modalOnce");
+      setCurrentStudio("life");
     }
 
-    function renderCard() {
-      const view = document.getElementById("view-card");
-      const container = document.getElementById("card-container");
-      if (!view || !container) return;
-
-      if (appState.activeView !== "card" || !appState.currentCard) {
-        view.style.display = "none";
-        return;
-      }
-
-      const cc = appState.currentCard;
-      const studio = STUDIOS[cc.studio];
-      if (!studio) {
-        view.style.display = "none";
-        return;
-      }
-
-      view.style.display = "block";
-
-      let card = null;
-      if (cc.cardId) {
-        card = appState.cards.find(c => c.id === cc.cardId && c.studio === cc.studio);
-      }
-
-      if (cc.mode === "view") {
-        if (!card) {
-          container.innerHTML = '<div class="studio-empty">未找到这张卡片。</div>';
-          return;
-        }
-        const created = (card.createdAt || "").slice(0, 10);
-        let eraHtml = "";
-        if (card.studio === "life" && card.eraHint && card.eraHint.hintText) {
-          eraHtml = `
-            <div class="era-hint">
-              <div class="era-hint-label">时代提示</div>
-              <div class="era-hint-text">${escapeHtml(card.eraHint.hintText)}</div>
-            </div>
-          `;
-        }
-        container.innerHTML = `
-          <div class="card-page-header">
-            <div class="card-page-studio-label">${studio.fullTitle}</div>
-            <div class="card-page-title">${escapeHtml(card.title)}</div>
-            <div class="card-page-meta">建卡时间：${created}</div>
-          </div>
-          ${eraHtml}
-          <div class="card-page-content">${escapeHtml(card.content)}</div>
-          <div class="card-page-actions">
-            <button class="btn btn-secondary" onclick="startEditCurrentCard()">编辑</button>
-          </div>
-        `;
-      } else if (cc.mode === "edit") {
-        const isNew = !cc.cardId;
-        const titleVal = isNew ? (cc.draftTitle || "") : (card ? card.title || "" : "");
-        const contentVal = isNew ? (cc.draftContent || "") : (card ? card.content || "" : "");
-        let eraHtml = "";
-        if (!isNew && card && card.studio === "life" && card.eraHint && card.eraHint.hintText) {
-          eraHtml = `
-            <div class="era-hint">
-              <div class="era-hint-label">时代提示</div>
-              <div class="era-hint-text">${escapeHtml(card.eraHint.hintText)}</div>
-            </div>
-          `;
-        }
-        container.innerHTML = `
-          <div class="card-page-header">
-            <div class="card-page-studio-label">${studio.fullTitle}</div>
-            <div class="card-page-title">${isNew ? "新建卡片" : "编辑卡片"}</div>
-          </div>
-          ${eraHtml}
-          <div>
-            <div class="card-edit-title-label">标题</div>
-            <input id="card-edit-title" class="card-edit-title-input" type="text" />
-            <div class="card-edit-content-label">内容</div>
-            <textarea id="card-edit-content" class="card-edit-content-input"></textarea>
-            <div class="card-page-actions">
-              <button class="btn btn-primary" onclick="saveCurrentCard()">保存</button>
-              <button class="btn btn-secondary" onclick="cancelEditCard()">取消</button>
-            </div>
-          </div>
-        `;
-        const titleInput = document.getElementById("card-edit-title");
-        const contentInput = document.getElementById("card-edit-content");
-        if (titleInput) titleInput.value = titleVal;
-        if (contentInput) {
-          contentInput.value = contentVal;
-          autoResize(contentInput);
-          contentInput.addEventListener("input", function () {
-            autoResize(contentInput);
-          });
-        }
-      }
+    // 生活：补一补细节
+    function openDetailModal(cardId) {
+      detailTargetId = cardId;
+      document.getElementById("detailWhen").value = "";
+      document.getElementById("detailWhere").value = "";
+      document.getElementById("detailEvent").value = "";
+      openModal("modalDetail");
     }
 
-    function renderAll() {
-      renderLobby();
-      renderStudio();
-      renderCard();
-      renderPersona();
+    function submitDetail() {
+      if (!detailTargetId) {
+        closeModal("modalDetail");
+        return;
+      }
+      const w = document.getElementById("detailWhen").value.trim();
+      const where = document.getElementById("detailWhere").value.trim();
+      const ev = document.getElementById("detailEvent").value.trim();
+      if (!w && !where && !ev) {
+        alert("可以只写一两项，但不能全部空着。");
+        return;
+      }
+      const idx = cards.findIndex(c => c.id === detailTargetId);
+      if (idx < 0) {
+        closeModal("modalDetail");
+        return;
+      }
+      let extra = "\n\n【补充细节】\n";
+      if (w) extra += "· 大概的阶段：\n" + w + "\n\n";
+      if (where) extra += "· 所在的地方 / 环境：\n" + where + "\n\n";
+      if (ev) extra += "· 一件最典型的小事：\n" + ev + "\n";
+      cards[idx] = {
+        ...cards[idx],
+        content: (cards[idx].content || "") + extra,
+        updatedAt: Date.now()
+      };
+      saveCards();
+      closeModal("modalDetail");
+      renderCardList();
     }
 
-    document.addEventListener("DOMContentLoaded", function () {
-      loadState();
-      renderAll();
+    // 艺术：记录旋律
+    function openMelodyModal() {
+      melodyBuffer = "";
+      updateMelodyDisplay();
+      document.getElementById("melodyKey").value = "C";
+      document.getElementById("melodyNote").value = "";
+      openModal("modalMelody");
+    }
+
+    function updateMelodyDisplay() {
+      const el = document.getElementById("melodyDisplay");
+      if (!el) return;
+      const trimmed = melodyBuffer.trim();
+      el.textContent = trimmed || "（点击下面的数字按钮开始记录）";
+    }
+
+    function addMelody(sym) {
+      melodyBuffer = (melodyBuffer + " " + sym).trim();
+      updateMelodyDisplay();
+    }
+
+    function melodyBackspace() {
+      if (!melodyBuffer) return;
+      const parts = melodyBuffer.trim().split(/\s+/);
+      parts.pop();
+      melodyBuffer = parts.join(" ");
+      updateMelodyDisplay();
+    }
+
+    function melodyClear() {
+      melodyBuffer = "";
+      updateMelodyDisplay();
+    }
+
+    function submitMelody() {
+      const seq = melodyBuffer.trim();
+      if (!seq) {
+        alert("先用数字按钮记一点旋律，再保存。");
+        return;
+      }
+      const key = document.getElementById("melodyKey").value || "C";
+      const note = document.getElementById("melodyNote").value.trim();
+      const now = Date.now();
+      let content = `【旋律草稿】\n· 调性：${key} 调\n· 简谱：\n${seq}\n`;
+      if (note) {
+        content += "\n· 场景 / 心情备注：\n" + note + "\n";
+      }
+      const title = "旋律草稿";
+      const id = "c_" + now + "_" + Math.random().toString(16).slice(2);
+      cards.push({
+        id,
+        studio: "art",
+        title,
+        content,
+        createdAt: now,
+        updatedAt: now,
+        templateType: "melody_seed"
+      });
+      saveCards();
+      closeModal("modalMelody");
+      setCurrentStudio("art");
+    }
+
+    // 艺术：小说骨架
+    function openStoryModal() {
+      document.getElementById("storyWhat").value = "";
+      document.getElementById("storyWhenWhere").value = "";
+      document.getElementById("storyConflict").value = "";
+      openModal("modalStory");
+    }
+
+    function submitStory() {
+      const w = document.getElementById("storyWhat").value.trim();
+      const ww = document.getElementById("storyWhenWhere").value.trim();
+      const cf = document.getElementById("storyConflict").value.trim();
+      if (!w && !ww && !cf) {
+        alert("至少写一点，再生成骨架卡。");
+        return;
+      }
+      const now = Date.now();
+      let content = "【小说骨架】\n";
+      if (w) content += "· 想写的是：\n" + w + "\n\n";
+      if (ww) content += "· 发生的时间 / 地方：\n" + ww + "\n\n";
+      if (cf) content += "· 最想写清楚的冲突 / 心情：\n" + cf + "\n";
+      const title = "小说骨架";
+      const id = "c_" + now + "_" + Math.random().toString(16).slice(2);
+      cards.push({
+        id,
+        studio: "art",
+        title,
+        content,
+        createdAt: now,
+        updatedAt: now,
+        templateType: "story_skeleton"
+      });
+      saveCards();
+      closeModal("modalStory");
+      setCurrentStudio("art");
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+      cards = loadCards();
+      document.querySelectorAll(".studio-tab").forEach(btn => {
+        btn.addEventListener("click", () => {
+          const s = btn.dataset.studio;
+          setCurrentStudio(s);
+        });
+      });
+      setCurrentStudio(currentStudio);
     });
   </script>
 </body>
