@@ -1,0 +1,962 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <title>LifeTraverse · 老年工作室 · 工作台</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <style>
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: #020617;
+      color: #e5e7eb;
+      font-size: 15px;
+    }
+
+    .app {
+      max-width: 960px;
+      margin: 0 auto;
+      min-height: 100vh;
+      padding: 10px 10px 22px;
+    }
+
+    header {
+      padding: 6px 2px 10px;
+    }
+
+    .header-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 8px;
+    }
+
+    .header-main {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .app-title {
+      font-size: 20px;
+      font-weight: 600;
+      color: #f9fafb;
+    }
+
+    .app-subtitle {
+      font-size: 13px;
+      color: #9ca3af;
+      margin-top: 4px;
+      line-height: 1.6;
+    }
+
+    .persona {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      cursor: pointer;
+      padding-left: 8px;
+    }
+
+    .persona-avatar {
+      width: 32px;
+      height: 32px;
+      border-radius: 999px;
+      background: #0f172a;
+      border: 1px solid #1f2937;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+      color: #e5e7eb;
+      margin-bottom: 2px;
+    }
+
+    .persona-name {
+      font-size: 12px;
+      color: #9ca3af;
+      max-width: 110px;
+      text-align: right;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    main {
+      margin-top: 8px;
+    }
+
+    .btn {
+      padding: 7px 14px;
+      border-radius: 999px;
+      border: none;
+      font-size: 14px;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg,#22c55e,#4ade80);
+      color: #022c22;
+      font-weight: 600;
+    }
+
+    .btn-secondary {
+      background: #0f172a;
+      color: #e5e7eb;
+      border: 1px solid #1f2937;
+    }
+
+    .btn:active {
+      opacity: 0.9;
+      transform: translateY(1px);
+    }
+
+    #view-lobby {
+      border-radius: 16px;
+      border: 1px solid #1e293b;
+      padding: 10px;
+      background: #020617;
+      box-shadow: 0 12px 40px rgba(0,0,0,0.7);
+    }
+
+    .lobby-header-text {
+      margin-bottom: 10px;
+    }
+
+    .lobby-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0,1fr));
+      gap: 8px;
+      margin-bottom: 10px;
+    }
+
+    .lobby-card {
+      border-radius: 12px;
+      border: 1px solid #1f2937;
+      padding: 10px 10px 11px;
+      background: #020617;
+      cursor: pointer;
+    }
+
+    .lobby-card-title {
+      font-size: 16px;
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+
+    .lobby-card-desc {
+      font-size: 13px;
+      color: #9ca3af;
+      line-height: 1.6;
+    }
+
+    .lobby-newcard {
+      margin-top: 6px;
+      padding-top: 8px;
+      border-top: 1px dashed #1f2937;
+    }
+
+    .lobby-newcard p {
+      font-size: 13px;
+      color: #9ca3af;
+      margin-top: 4px;
+      line-height: 1.6;
+    }
+
+    #view-studio {
+      border-radius: 16px;
+      border: 1px solid #1e293b;
+      padding: 10px;
+      background: #020617;
+      box-shadow: 0 12px 40px rgba(0,0,0,0.7);
+      display: none;
+    }
+
+    .studio-top-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      margin-bottom: 8px;
+    }
+
+    .studio-back {
+      font-size: 13px;
+      color: #9ca3af;
+      cursor: pointer;
+    }
+
+    .studio-back span {
+      font-size: 16px;
+      margin-right: 4px;
+    }
+
+    .studio-header {
+      padding: 6px 2px 8px;
+    }
+
+    .studio-title {
+      font-size: 18px;
+      font-weight: 600;
+      margin-bottom: 3px;
+    }
+
+    .studio-subtitle {
+      font-size: 13px;
+      color: #9ca3af;
+      line-height: 1.6;
+    }
+
+    .studio-welcome {
+      margin-top: 5px;
+      font-size: 14px;
+      color: #cbd5f5;
+      line-height: 1.6;
+    }
+
+    .studio-actions {
+      margin-top: 6px;
+      margin-bottom: 6px;
+    }
+
+    .studio-actions .btn-primary {
+      padding-inline: 16px;
+    }
+
+    .studio-list {
+      border-radius: 12px;
+      border: 1px solid #1f2937;
+      padding: 8px 8px 10px;
+      background: #020617;
+      max-height: 360px;
+      overflow-y: auto;
+    }
+
+    .studio-list-title {
+      font-size: 14px;
+      color: #9ca3af;
+      margin-bottom: 6px;
+    }
+
+    .card-item {
+      border-radius: 8px;
+      border: 1px solid #1f2937;
+      padding: 7px 8px;
+      margin-bottom: 6px;
+      cursor: pointer;
+      background: #020617;
+    }
+
+    .card-item:hover {
+      border-color: #22c55e;
+    }
+
+    .card-title {
+      font-size: 14px;
+      color: #e5e7eb;
+      margin-bottom: 2px;
+    }
+
+    .card-snippet {
+      font-size: 13px;
+      color: #9ca3af;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      overflow: hidden;
+    }
+
+    .card-meta {
+      font-size: 11px;
+      color: #6b7280;
+      margin-top: 2px;
+    }
+
+    .studio-empty {
+      font-size: 14px;
+      color: #6b7280;
+      padding: 4px;
+      line-height: 1.6;
+    }
+
+    #view-card {
+      border-radius: 16px;
+      border: 1px solid #1e293b;
+      padding: 10px;
+      background: #020617;
+      box-shadow: 0 12px 40px rgba(0,0,0,0.7);
+      display: none;
+    }
+
+    .card-page-back {
+      font-size: 13px;
+      color: #9ca3af;
+      cursor: pointer;
+      margin-bottom: 6px;
+    }
+
+    .card-page-back span {
+      font-size: 16px;
+      margin-right: 4px;
+    }
+
+    .card-page-header {
+      margin-bottom: 8px;
+    }
+
+    .card-page-studio-label {
+      font-size: 12px;
+      color: #6b7280;
+      margin-bottom: 2px;
+    }
+
+    .card-page-title {
+      font-size: 18px;
+      font-weight: 600;
+      color: #f9fafb;
+    }
+
+    .card-page-meta {
+      font-size: 11px;
+      color: #6b7280;
+      margin-top: 3px;
+    }
+
+    .card-page-content {
+      font-size: 15px;
+      color: #e5e7eb;
+      line-height: 1.8;
+      margin-top: 8px;
+      white-space: pre-wrap;
+    }
+
+    .card-page-actions {
+      margin-top: 10px;
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .card-edit-title-label,
+    .card-edit-content-label {
+      font-size: 13px;
+      color: #9ca3af;
+      margin-bottom: 4px;
+    }
+
+    .card-edit-title-input {
+      width: 100%;
+      padding: 7px 8px;
+      border-radius: 8px;
+      border: 1px solid #1f2937;
+      font-size: 15px;
+      background: #020617;
+      color: #e5e7eb;
+      margin-bottom: 8px;
+    }
+
+    .card-edit-content-input {
+      width: 100%;
+      min-height: 140px;
+      resize: none;
+      padding: 8px 8px;
+      border-radius: 8px;
+      border: 1px solid #1f2937;
+      font-size: 15px;
+      background: #020617;
+      color: #e5e7eb;
+      line-height: 1.8;
+    }
+
+    .era-hint {
+      margin-top: 8px;
+      padding: 7px 8px;
+      border-left: 3px solid #fde68a;
+      border-radius: 6px;
+      background: #0f172a;
+      font-size: 14px;
+      color: #e5e7eb;
+    }
+
+    .era-hint-label {
+      font-size: 12px;
+      color: #facc15;
+      margin-bottom: 1px;
+    }
+
+    .era-hint-text {
+      line-height: 1.7;
+    }
+
+    @media (max-width: 480px) {
+      .app {
+        padding: 8px 8px 20px;
+      }
+      #view-lobby,
+      #view-studio,
+      #view-card {
+        padding: 9px;
+      }
+      .lobby-card {
+        padding: 9px 9px 10px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <header>
+      <div class="header-row">
+        <div class="header-main">
+          <div class="app-title">LifeTraverse · 老年工作室</div>
+          <div class="app-subtitle">用记录，留住越过的痕迹。</div>
+        </div>
+        <div class="persona" onclick="editPersonaName()">
+          <div class="persona-avatar" id="persona-avatar">师</div>
+          <div class="persona-name" id="persona-name">这位老师</div>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <section id="view-lobby">
+        <div class="lobby-header-text"></div>
+        <div class="lobby-grid">
+          <div class="lobby-card" onclick="openStudio('life')">
+            <div class="lobby-card-title">生活</div>
+            <div class="lobby-card-desc">今天与从前的点滴。</div>
+          </div>
+          <div class="lobby-card" onclick="openStudio('art')">
+            <div class="lobby-card-title">艺术</div>
+            <div class="lobby-card-desc">作品和灵感都算数。</div>
+          </div>
+          <div class="lobby-card" onclick="openStudio('thought')">
+            <div class="lobby-card-title">思想</div>
+            <div class="lobby-card-desc">写清楚你的一套想法。</div>
+          </div>
+          <div class="lobby-card" onclick="openStudio('tech')">
+            <div class="lobby-card-title">技艺</div>
+            <div class="lobby-card-desc">把你的拿手本领写下来。</div>
+          </div>
+        </div>
+        <div class="lobby-newcard">
+          <button class="btn btn-primary" onclick="startNewCardFromLobby()">
+            新建卡片
+          </button>
+          <p>先记下来，之后再分类。</p>
+        </div>
+      </section>
+
+      <section id="view-studio">
+        <div class="studio-top-bar">
+          <div class="studio-back" onclick="goToLobby()">
+            <span>←</span> 返回大厅
+          </div>
+        </div>
+        <div id="studio-container"></div>
+      </section>
+
+      <section id="view-card">
+        <div class="card-page-back" onclick="backToStudio()">
+          <span>←</span> 返回工作室
+        </div>
+        <div id="card-container"></div>
+      </section>
+    </main>
+  </div>
+
+  <script>
+    (function (global) {
+      const YEAR_EVENTS = [
+        { year: 1960, label: "三年困难后的恢复期", summary: "很多家庭都在慢慢从三年困难走出来，物资紧张、记忆很深。" },
+        { year: 1978, label: "改革开放初期", summary: "国家开始改革开放，很多人第一次听说“个体户”“下海”“特区”这些说法。" },
+        { year: 1984, label: "城市改革加速", summary: "城市里开始出现更多个体小摊、小店，大家对“多挣点钱”有了新的想法。" },
+        { year: 1988, label: "物价上涨与国企改革", summary: "那几年物价变化明显，很多人记得“涨价风波”，国企改革、合同制也慢慢铺开。" },
+        { year: 1989, label: "变动中的年代", summary: "社会气氛比较复杂，很多人对未来既有期待也有不确定感。" },
+        { year: 1992, label: "南巡讲话后的热潮", summary: "市场气息一下子浓起来，沿海城市发展很快，很多人开始下海做生意。" },
+        { year: 1998, label: "长江洪水与国企改制", summary: "抗洪让全国印象深刻，同时国企减员、分流开始影响很多家庭。" },
+        { year: 2003, label: "非典那一年", summary: "大家第一次经历大范围传染病防控，学校停课、单位停工，记忆非常深刻。" },
+        { year: 2008, label: "汶川地震与北京奥运", summary: "一场大地震让全国为四川流泪，几个月后北京奥运又点燃了盛大自豪。" },
+        { year: 2020, label: "疫情之年", summary: "全国大范围居家、防控，很多人的生活节奏被彻底打乱，也留下了很多特别的记忆。" }
+      ];
+
+      function extractYearFromText(text) {
+        if (!text) return null;
+        const m = text.match(/(19[5-9]\d|20[0-2]\d)/);
+        if (!m) return null;
+        const year = parseInt(m[1], 10);
+        if (isNaN(year)) return null;
+        return year;
+      }
+
+      function findYearEvent(year) {
+        if (!year) return null;
+        let ev = YEAR_EVENTS.find(e => e.year === year);
+        if (ev) return ev;
+        ev = YEAR_EVENTS.find(e => Math.abs(e.year - year) === 1);
+        return ev || null;
+      }
+
+      function buildEraHint(year, event) {
+        if (!event) return null;
+        const y = event.year;
+        const label = event.label || "";
+        const summary = event.summary || "";
+        const hintText =
+          `你说的是 ${y} 年左右。那是“${label}”的阶段，` +
+          `${summary} 我们先把你当时那件事记清楚。`;
+        return { year: y, label, hintText };
+      }
+
+      const EraEngine = {
+        applyToCard(card) {
+          try {
+            if (!card || card.studio !== "life") return card;
+            if (card.eraHintUsed) return card;
+            const text = `${card.title || ""} ${card.content || ""}`.replace(/\s+/g, " ").trim();
+            const year = extractYearFromText(text);
+            const ev = findYearEvent(year);
+            if (!ev) {
+              card.eraHintUsed = true;
+              return card;
+            }
+            const hint = buildEraHint(year, ev);
+            if (hint) {
+              card.eraHint = hint;
+              card.eraHintUsed = true;
+            }
+            return card;
+          } catch (e) {
+            console.warn("EraEngine 处理失败：", e);
+            return card;
+          }
+        }
+      };
+
+      global.EraEngine = EraEngine;
+    })(window);
+  </script>
+
+  <script>
+    const PLAN_LEVEL = "FREE";
+    const STORAGE_KEY = "elderStudio_v054";
+
+    const STUDIOS = {
+      life: {
+        key: "life",
+        lobbyTitle: "生活",
+        fullTitle: "生活工作室",
+        subtitle: "精彩生活 / 温馨回忆。",
+        welcome: "最近哪一件事，你最想留下？",
+        listTitle: "生活工作室里的卡片"
+      },
+      art: {
+        key: "art",
+        lobbyTitle: "艺术",
+        fullTitle: "艺术工作室",
+        subtitle: "书画、摄影、诗文，都算作品。",
+        welcome: "先写一件你最近完成或正在做的作品。",
+        listTitle: "艺术工作室里的卡片"
+      },
+      thought: {
+        key: "thought",
+        lobbyTitle: "思想",
+        fullTitle: "思想工作室",
+        subtitle: "这里只帮你写清楚，不做裁判。",
+        welcome: "先写 1–3 条你最想坚持的观点。",
+        listTitle: "思想工作室里的卡片"
+      },
+      tech: {
+        key: "tech",
+        lobbyTitle: "技艺",
+        fullTitle: "技艺工作室",
+        subtitle: "把你的专业经验、拿手本领写下来。",
+        welcome: "先选一件你最熟悉的工作或项目来写。",
+        listTitle: "技艺工作室里的卡片"
+      }
+    };
+
+    const appState = {
+      activeView: "lobby",
+      activeStudio: null,
+      cards: [],
+      currentCard: null,
+      personaName: "这位老师"
+    };
+
+    function loadState() {
+      try {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        if (!raw) return;
+        const saved = JSON.parse(raw);
+        if (saved && Array.isArray(saved.cards)) {
+          appState.cards = saved.cards;
+        }
+        if (saved && typeof saved.personaName === "string") {
+          appState.personaName = saved.personaName || "这位老师";
+        }
+      } catch (e) {
+        console.warn("加载本地数据失败：", e);
+      }
+    }
+
+    function saveState() {
+      try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify({
+          cards: appState.cards,
+          personaName: appState.personaName
+        }));
+      } catch (e) {
+        console.warn("保存本地数据失败：", e);
+      }
+    }
+
+    function escapeHtml(str) {
+      if (!str) return "";
+      return str
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;/")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+    }
+
+    function renderPersona() {
+      const nameEl = document.getElementById("persona-name");
+      const avatarEl = document.getElementById("persona-avatar");
+      if (!nameEl || !avatarEl) return;
+      const name = (appState.personaName || "这位老师").trim() || "这位老师";
+      nameEl.textContent = name;
+      const pure = name.replace(/\s+/g, "");
+      avatarEl.textContent = pure ? pure[0] : "师";
+    }
+
+    function editPersonaName() {
+      const current = appState.personaName && appState.personaName !== "这位老师"
+        ? appState.personaName
+        : "";
+      const input = prompt("我以后怎么称呼你比较合适？（例如：张老师、王师傅）", current || "");
+      if (!input) return;
+      appState.personaName = input.trim() || "这位老师";
+      saveState();
+      renderPersona();
+    }
+
+    function goToLobby() {
+      appState.activeView = "lobby";
+      appState.activeStudio = null;
+      appState.currentCard = null;
+      renderAll();
+    }
+
+    function openStudio(studioKey) {
+      if (!STUDIOS[studioKey]) return;
+      appState.activeView = "studio";
+      appState.activeStudio = studioKey;
+      appState.currentCard = null;
+      renderAll();
+    }
+
+    function startNewCardFromLobby() {
+      if (!appState.activeStudio) {
+        appState.activeStudio = "life";
+      }
+      openStudio(appState.activeStudio);
+      openNewCard(appState.activeStudio);
+    }
+
+    function openNewCard(studioKey) {
+      if (!STUDIOS[studioKey]) return;
+      appState.activeView = "card";
+      appState.currentCard = {
+        studio: studioKey,
+        cardId: null,
+        mode: "edit",
+        draftTitle: "",
+        draftContent: ""
+      };
+      renderAll();
+    }
+
+    function openCard(studioKey, cardId) {
+      const card = appState.cards.find(c => c.id === cardId && c.studio === studioKey);
+      if (!card) return;
+      appState.activeView = "card";
+      appState.activeStudio = studioKey;
+      appState.currentCard = {
+        studio: studioKey,
+        cardId: cardId,
+        mode: "view"
+      };
+      renderAll();
+    }
+
+    function backToStudio() {
+      if (!appState.activeStudio) {
+        goToLobby();
+        return;
+      }
+      appState.activeView = "studio";
+      appState.currentCard = null;
+      renderAll();
+    }
+
+    function startEditCurrentCard() {
+      const cc = appState.currentCard;
+      if (!cc) return;
+      const card = appState.cards.find(c => c.id === cc.cardId && c.studio === cc.studio);
+      if (!card) return;
+      appState.currentCard = {
+        studio: cc.studio,
+        cardId: cc.cardId,
+        mode: "edit",
+        draftTitle: card.title || "",
+        draftContent: card.content || ""
+      };
+      renderAll();
+    }
+
+    function cancelEditCard() {
+      const cc = appState.currentCard;
+      if (!cc) return;
+      if (cc.cardId === null) {
+        backToStudio();
+      } else {
+        appState.currentCard = {
+          studio: cc.studio,
+          cardId: cc.cardId,
+          mode: "view"
+        };
+        renderAll();
+      }
+    }
+
+    function saveCurrentCard() {
+      const cc = appState.currentCard;
+      if (!cc || cc.mode !== "edit") return;
+      const titleInput = document.getElementById("card-edit-title");
+      const contentInput = document.getElementById("card-edit-content");
+      if (!titleInput || !contentInput) return;
+
+      const title = (titleInput.value || "").trim();
+      const content = (contentInput.value || "").trim();
+
+      if (!title || !content) {
+        alert("标题和内容都要有一点文字，保存前先补一补。");
+        return;
+      }
+
+      let card;
+      if (cc.cardId === null) {
+        card = {
+          id: cc.studio + "-" + Date.now(),
+          studio: cc.studio,
+          title: title,
+          content: content,
+          eraHint: null,
+          eraHintUsed: false,
+          createdAt: new Date().toISOString()
+        };
+        if (card.studio === "life" && window.EraEngine) {
+          card = window.EraEngine.applyToCard(card);
+        }
+        appState.cards.unshift(card);
+        appState.currentCard = {
+          studio: cc.studio,
+          cardId: card.id,
+          mode: "view"
+        };
+      } else {
+        const idx = appState.cards.findIndex(c => c.id === cc.cardId && c.studio === cc.studio);
+        if (idx === -1) return;
+        card = appState.cards[idx];
+        card.title = title;
+        card.content = content;
+        if (card.studio === "life" && window.EraEngine && !card.eraHint) {
+          card.eraHintUsed = false;
+          card = window.EraEngine.applyToCard(card);
+          appState.cards[idx] = card;
+        }
+        appState.currentCard = {
+          studio: cc.studio,
+          cardId: card.id,
+          mode: "view"
+        };
+      }
+
+      saveState();
+      renderAll();
+    }
+
+    function autoResize(textarea) {
+      if (!textarea) return;
+      textarea.style.height = "auto";
+      textarea.style.height = textarea.scrollHeight + "px";
+    }
+
+    function renderLobby() {
+      const lobby = document.getElementById("view-lobby");
+      if (!lobby) return;
+      lobby.style.display = (appState.activeView === "lobby") ? "block" : "none";
+    }
+
+    function renderStudio() {
+      const view = document.getElementById("view-studio");
+      const container = document.getElementById("studio-container");
+      if (!view || !container) return;
+
+      if (appState.activeView !== "studio" || !appState.activeStudio) {
+        view.style.display = "none";
+        return;
+      }
+
+      const studio = STUDIOS[appState.activeStudio];
+      if (!studio) {
+        view.style.display = "none";
+        return;
+      }
+
+      view.style.display = "block";
+
+      const cards = appState.cards.filter(c => c.studio === studio.key);
+      const listHtml = cards.length
+        ? cards
+            .map(c => {
+              const created = (c.createdAt || "").slice(0, 10);
+              const snippet = (c.content || "").replace(/\s+/g, " ").slice(0, 40);
+              return `
+                <div class="card-item" onclick="openCard('${studio.key}','${c.id}')">
+                  <div class="card-title">${escapeHtml(c.title)}</div>
+                  <div class="card-snippet">${escapeHtml(snippet)}</div>
+                  <div class="card-meta">${created}</div>
+                </div>
+              `;
+            })
+            .join("")
+        : '<div class="studio-empty">这里还没有卡片。你可以先新建一张。</div>';
+
+      container.innerHTML = `
+        <div class="studio-header">
+          <div class="studio-title">${studio.fullTitle}</div>
+          <div class="studio-subtitle">${studio.subtitle}</div>
+          <div class="studio-welcome">${studio.welcome}</div>
+        </div>
+        <div class="studio-actions">
+          <button class="btn btn-primary" onclick="openNewCard('${studio.key}')">新建卡片</button>
+        </div>
+        <div class="studio-list">
+          <div class="studio-list-title">${studio.listTitle}</div>
+          ${listHtml}
+        </div>
+      `;
+    }
+
+    function renderCard() {
+      const view = document.getElementById("view-card");
+      const container = document.getElementById("card-container");
+      if (!view || !container) return;
+
+      if (appState.activeView !== "card" || !appState.currentCard) {
+        view.style.display = "none";
+        return;
+      }
+
+      const cc = appState.currentCard;
+      const studio = STUDIOS[cc.studio];
+      if (!studio) {
+        view.style.display = "none";
+        return;
+      }
+
+      view.style.display = "block";
+
+      let card = null;
+      if (cc.cardId) {
+        card = appState.cards.find(c => c.id === cc.cardId && c.studio === cc.studio);
+      }
+
+      if (cc.mode === "view") {
+        if (!card) {
+          container.innerHTML = '<div class="studio-empty">未找到这张卡片。</div>';
+          return;
+        }
+        const created = (card.createdAt || "").slice(0, 10);
+        let eraHtml = "";
+        if (card.studio === "life" && card.eraHint && card.eraHint.hintText) {
+          eraHtml = `
+            <div class="era-hint">
+              <div class="era-hint-label">时代提示</div>
+              <div class="era-hint-text">${escapeHtml(card.eraHint.hintText)}</div>
+            </div>
+          `;
+        }
+        container.innerHTML = `
+          <div class="card-page-header">
+            <div class="card-page-studio-label">${studio.fullTitle}</div>
+            <div class="card-page-title">${escapeHtml(card.title)}</div>
+            <div class="card-page-meta">建卡时间：${created}</div>
+          </div>
+          ${eraHtml}
+          <div class="card-page-content">${escapeHtml(card.content)}</div>
+          <div class="card-page-actions">
+            <button class="btn btn-secondary" onclick="startEditCurrentCard()">编辑</button>
+          </div>
+        `;
+      } else if (cc.mode === "edit") {
+        const isNew = !cc.cardId;
+        const titleVal = isNew ? (cc.draftTitle || "") : (card ? card.title || "" : "");
+        const contentVal = isNew ? (cc.draftContent || "") : (card ? card.content || "" : "");
+        let eraHtml = "";
+        if (!isNew && card && card.studio === "life" && card.eraHint && card.eraHint.hintText) {
+          eraHtml = `
+            <div class="era-hint">
+              <div class="era-hint-label">时代提示</div>
+              <div class="era-hint-text">${escapeHtml(card.eraHint.hintText)}</div>
+            </div>
+          `;
+        }
+        container.innerHTML = `
+          <div class="card-page-header">
+            <div class="card-page-studio-label">${studio.fullTitle}</div>
+            <div class="card-page-title">${isNew ? "新建卡片" : "编辑卡片"}</div>
+          </div>
+          ${eraHtml}
+          <div>
+            <div class="card-edit-title-label">标题</div>
+            <input id="card-edit-title" class="card-edit-title-input" type="text" />
+            <div class="card-edit-content-label">内容</div>
+            <textarea id="card-edit-content" class="card-edit-content-input"></textarea>
+            <div class="card-page-actions">
+              <button class="btn btn-primary" onclick="saveCurrentCard()">保存</button>
+              <button class="btn btn-secondary" onclick="cancelEditCard()">取消</button>
+            </div>
+          </div>
+        `;
+        const titleInput = document.getElementById("card-edit-title");
+        const contentInput = document.getElementById("card-edit-content");
+        if (titleInput) titleInput.value = titleVal;
+        if (contentInput) {
+          contentInput.value = contentVal;
+          autoResize(contentInput);
+          contentInput.addEventListener("input", function () {
+            autoResize(contentInput);
+          });
+        }
+      }
+    }
+
+    function renderAll() {
+      renderLobby();
+      renderStudio();
+      renderCard();
+      renderPersona();
+    }
+
+    document.addEventListener("DOMContentLoaded", function () {
+      loadState();
+      renderAll();
+    });
+  </script>
+</body>
+</html>
