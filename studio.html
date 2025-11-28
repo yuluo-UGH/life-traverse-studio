@@ -3,14 +3,14 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1" />
-  <title>老年工作室 · LifeTraverse</title>
+  <title>老年工作室 · LifeTraverse v0.8</title>
   <style>
     :root {
       color-scheme: dark;
       --bg: #020617;
       --card: #020617;
       --accent: #22c55e;
-      --accent-soft: rgba(34, 197, 94, 0.12);
+      --accent-soft: rgba(34, 197, 94, 0.16);
       --text-main: #f9fafb;
       --text-sub: #9ca3af;
       --border-soft: #1f2937;
@@ -220,6 +220,36 @@
       line-height: 1.6;
     }
 
+    /* 最近卡片 */
+    .recent-block {
+      margin-top: 10px;
+      padding: 8px 10px;
+      border-radius: 12px;
+      border: 1px solid var(--border-soft);
+      background: rgba(15, 23, 42, 0.96);
+    }
+    .recent-title {
+      font-size: 13px;
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+    .recent-list {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    .recent-item {
+      font-size: 11px;
+      color: var(--text-sub);
+      cursor: pointer;
+      padding: 3px 2px;
+      border-radius: 6px;
+    }
+    .recent-item:hover {
+      background: rgba(15, 23, 42, 0.96);
+      color: #e5e7eb;
+    }
+
     /* 工作室视图 */
     .layout {
       display: flex;
@@ -273,9 +303,12 @@
       gap: 6px;
       margin-bottom: 4px;
     }
-    .btn-main, .btn-ghost {
+
+    /* 按钮体系 */
+    .btn-main,
+    .btn-ghost {
       border-radius: 999px;
-      border: none;
+      border: 1px solid transparent;
       font-size: 13px;
       padding: 7px 14px;
       cursor: pointer;
@@ -284,12 +317,17 @@
       align-items: center;
       justify-content: center;
       gap: 4px;
-      transition: background 0.12s ease-out, color 0.12s ease-out, border-color 0.12s ease-out, transform 0.08s ease-out;
+      transition:
+        background 0.12s ease-out,
+        color 0.12s ease-out,
+        border-color 0.12s ease-out,
+        transform 0.08s ease-out;
     }
     .btn-main {
-      background: linear-gradient(135deg, var(--accent), #4ade80);
-      color: #022c22;
+      background: linear-gradient(135deg, #16a34a, #15803d); /* 深绿，不刺眼 */
+      color: #f9fafb;
       font-weight: 560;
+      border-color: #22c55e;
       box-shadow: 0 6px 16px rgba(0, 0, 0, 0.4);
     }
     .btn-main:hover {
@@ -301,13 +339,31 @@
       box-shadow: 0 4px 10px rgba(0, 0, 0, 0.45);
     }
     .btn-ghost {
-      border: 1px solid var(--border-soft);
+      border-color: var(--border-soft);
       background: rgba(15, 23, 42, 0.9);
       color: var(--text-sub);
     }
     .btn-ghost:hover {
       border-color: var(--accent);
       color: var(--text-main);
+    }
+
+    .btn-small {
+      border-radius: 999px;
+      border: 1px solid var(--border-soft);
+      background: transparent;
+      color: var(--text-sub);
+      font-size: 11px;
+      padding: 3px 8px;
+      cursor: pointer;
+    }
+    .btn-small:hover {
+      border-color: var(--accent);
+      color: var(--text-main);
+    }
+    .btn-small-danger {
+      border-color: rgba(248, 113, 113, 0.7);
+      color: #fecaca;
     }
 
     .small-hint {
@@ -317,11 +373,41 @@
       margin-top: 4px;
     }
 
+    /* 右侧：筛选区域 */
+    .filter-bar {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin-bottom: 6px;
+    }
+    .filter-tag-container {
+      min-width: 0;
+      flex: 1;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+    .filter-hint {
+      font-size: 11px;
+      color: var(--text-sub);
+      white-space: nowrap;
+    }
+    .filter-input {
+      flex: 1.4;
+      min-width: 0;
+      border-radius: 999px;
+      border: 1px solid var(--border-soft);
+      background: rgba(15, 23, 42, 0.98);
+      color: var(--text-main);
+      padding: 5px 10px;
+      font-size: 12px;
+    }
+
     .card-list {
       display: flex;
       flex-direction: column;
       gap: 8px;
-      max-height: calc(100vh - 190px);
+      max-height: calc(100vh - 210px);
       overflow-y: auto;
       padding-right: 2px;
     }
@@ -372,29 +458,35 @@
       border-radius: 10px;
       border: 1px solid var(--border-soft);
     }
+    .card-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 4px;
+      margin-top: 2px;
+    }
+    .tag-pill {
+      border-radius: 999px;
+      border: 1px solid var(--border-soft);
+      padding: 2px 8px;
+      font-size: 11px;
+      color: #e5e7eb;
+      background: rgba(15, 23, 42, 0.96);
+      cursor: pointer;
+    }
+    .tag-pill:hover {
+      border-color: var(--accent);
+    }
+    .tag-pill.active {
+      border-color: var(--accent);
+      background: rgba(22, 163, 74, 0.24);
+    }
+
     .card-footer {
       display: flex;
       flex-wrap: wrap;
       justify-content: flex-end;
       gap: 4px;
       margin-top: 4px;
-    }
-    .btn-small {
-      border-radius: 999px;
-      border: 1px solid var(--border-soft);
-      background: transparent;
-      color: var(--text-sub);
-      font-size: 11px;
-      padding: 3px 8px;
-      cursor: pointer;
-    }
-    .btn-small:hover {
-      border-color: var(--accent);
-      color: var(--text-main);
-    }
-    .btn-small-danger {
-      border-color: rgba(248, 113, 113, 0.6);
-      color: #fecaca;
     }
     .empty-hint {
       font-size: 12px;
@@ -403,10 +495,17 @@
     }
 
     .footer-info {
-      margin-top: 10px;
+      margin-top: 8px;
       font-size: 11px;
       color: var(--text-sub);
       line-height: 1.6;
+    }
+    .export-row {
+      margin-top: 6px;
+      display: flex;
+      gap: 6px;
+      justify-content: flex-end;
+      flex-wrap: wrap;
     }
 
     /* 模态框 */
@@ -451,7 +550,9 @@
       font-size: 12px;
       margin-bottom: 2px;
     }
-    .modal-input, .modal-textarea, .modal-select {
+    .modal-input,
+    .modal-textarea,
+    .modal-select {
       width: 100%;
       border-radius: 8px;
       border: 1px solid var(--border-soft);
@@ -472,7 +573,8 @@
       margin-top: 4px;
       flex-wrap: wrap;
     }
-    .btn-secondary, .btn-primary {
+    .btn-secondary,
+    .btn-primary {
       border-radius: 999px;
       border: 1px solid var(--border-soft);
       padding: 6px 14px;
@@ -487,8 +589,8 @@
     }
     .btn-primary {
       border-color: var(--accent);
-      background: linear-gradient(135deg, var(--accent), #4ade80);
-      color: #022c22;
+      background: linear-gradient(135deg, #16a34a, #15803d);
+      color: #f9fafb;
       font-weight: 560;
     }
     .btn-primary:hover {
@@ -588,6 +690,17 @@
       background: radial-gradient(circle at top, var(--accent-soft), rgba(15, 23, 42, 0.96));
       color: var(--text-main);
     }
+
+    /* 语音键小提示图（占位样式，可替换为真实图片） */
+    .voice-hint-box {
+      border-radius: 10px;
+      border: 1px dashed var(--border-soft);
+      padding: 6px 8px;
+      font-size: 11px;
+      color: var(--text-sub);
+      line-height: 1.6;
+      margin-bottom: 6px;
+    }
   </style>
 </head>
 <body>
@@ -655,6 +768,11 @@
       <div class="home-hint">
         提示：这三个入口做的是一件事——先留住这一段。不急着分门别类，以后可以在「工作室视图」里慢慢整理。
       </div>
+
+      <div class="recent-block" id="recentBlock" style="display:none;">
+        <div class="recent-title">最近写的几张卡</div>
+        <div class="recent-list" id="recentList"></div>
+      </div>
     </section>
 
     <!-- 工作室视图 -->
@@ -676,12 +794,27 @@
       </div>
 
       <div class="panel panel-right">
+        <div class="filter-bar">
+          <div class="filter-tag-container" id="filterTagContainer">
+            <span class="filter-hint">当前：查看全部卡片</span>
+          </div>
+          <input
+            id="searchInput"
+            class="filter-input"
+            placeholder="搜索标题、内容或标签"
+          />
+        </div>
+
         <div class="card-list" id="cardList"></div>
         <div class="empty-hint" id="emptyHint" style="display:none;">
           这一间还空着，可以先新建一张卡片试一试。
         </div>
         <div class="footer-info">
           说明：这里只帮你记录和整理，不做医疗、理财、法律、养老等决策。需要专业意见时，请线下咨询医生、律师或理财人员。
+        </div>
+        <div class="export-row">
+          <button class="btn-ghost" onclick="exportCurrentStudio()">导出当前工作室</button>
+          <button class="btn-main" onclick="exportAllCards()">导出全部记录</button>
         </div>
       </div>
     </section>
@@ -705,6 +838,13 @@
   <div class="modal-wrap" id="modalEdit">
     <div class="modal">
       <div class="modal-title" id="modalEditTitle">编辑卡片</div>
+      <div class="modal-desc">
+        提示：可以用手机键盘上的语音输入键（小麦克风）直接说，系统会自动转成文字。
+      </div>
+      <div class="voice-hint-box">
+        如果看到键盘上有一个 <strong>🎤 小麦克风</strong>，点一下就可以边说边转成字；<br />
+        说完记得点“保存这张卡片”。
+      </div>
       <div class="modal-field">
         <div class="modal-label">标题（可留空）</div>
         <input id="editTitle" class="modal-input" placeholder="给这张卡片起个名字（可不填）" />
@@ -713,9 +853,13 @@
         <div class="modal-label">内容</div>
         <textarea id="editContent" class="modal-textarea" placeholder="可以分段写，慢慢补。"></textarea>
       </div>
+      <div class="modal-field">
+        <div class="modal-label">标签（用空格或逗号分开，可选）</div>
+        <input id="editTags" class="modal-input" placeholder="例如：生活 孩子 项目" />
+      </div>
       <div class="modal-btn-row">
         <button class="btn-secondary" onclick="closeModal('modalEdit')">取消</button>
-        <button class="btn-primary" onclick="saveEdit()">保存</button>
+        <button class="btn-primary" onclick="saveEdit()">保存这张卡片</button>
       </div>
     </div>
   </div>
@@ -871,7 +1015,10 @@
   </div>
 
   <script>
-    const STORAGE_KEY = "lt_elder_cards_v07";
+    // v0.8 使用新存储键；第一次会尝试从旧版本迁移
+    const STORAGE_KEY = "lt_elder_cards_v08";
+    const LEGACY_KEYS = ["lt_elder_cards_v07", "lt_elder_cards_v06"];
+
     const STUDIO_CONFIG = {
       life: {
         name: "生活工作室",
@@ -921,13 +1068,42 @@
     let detailTargetId = null;
     let melodyBuffer = "";
     let pendingPhotoData = null;
+    let activeTagFilter = null;
+    let searchKeyword = "";
+
+    function normalizeCard(card) {
+      if (!card || typeof card !== "object") return null;
+      return {
+        ...card,
+        tags: Array.isArray(card.tags) ? card.tags : []
+      };
+    }
+
+    function parseStoredCards(raw) {
+      try {
+        const arr = JSON.parse(raw);
+        if (!Array.isArray(arr)) return [];
+        return arr.map(normalizeCard).filter(Boolean);
+      } catch (e) {
+        return [];
+      }
+    }
 
     function loadCards() {
       try {
         const raw = localStorage.getItem(STORAGE_KEY);
-        if (!raw) return [];
-        const arr = JSON.parse(raw);
-        if (Array.isArray(arr)) return arr;
+        if (raw) {
+          return parseStoredCards(raw);
+        }
+        // 尝试从旧版本迁移
+        for (const key of LEGACY_KEYS) {
+          const legacy = localStorage.getItem(key);
+          if (legacy) {
+            const legacyArr = parseStoredCards(legacy);
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(legacyArr));
+            return legacyArr;
+          }
+        }
       } catch (e) {}
       return [];
     }
@@ -936,6 +1112,7 @@
       try {
         localStorage.setItem(STORAGE_KEY, JSON.stringify(cards));
       } catch (e) {}
+      renderRecent(); // 每次保存后更新一下“最近卡片”
     }
 
     function formatTime(ts) {
@@ -950,6 +1127,13 @@
       } catch (e) {
         return "";
       }
+    }
+
+    function parseTags(raw) {
+      if (!raw) return [];
+      const parts = raw.split(/[,，\s]+/).map(t => t.trim()).filter(Boolean);
+      const uniq = Array.from(new Set(parts));
+      return uniq;
     }
 
     function switchView(view) {
@@ -1037,12 +1221,14 @@
         imageData: pendingPhotoData,
         createdAt: now,
         updatedAt: now,
-        templateType: "photo_note"
+        templateType: "photo_note",
+        tags: ["生活", "照片"]
       });
       saveCards();
       cancelPhotoCard();
       setCurrentStudio("life");
       switchView("studio");
+      renderCardList();
     }
 
     function setCurrentStudio(studio) {
@@ -1076,15 +1262,28 @@
       });
 
       updateBottomNavActive();
+      updateFilterUI();
       renderCardList();
     }
 
     function renderCardList() {
       const listEl = document.getElementById("cardList");
       listEl.innerHTML = "";
-      const studioCards = cards
+      let studioCards = cards
         .filter(c => c.studio === currentStudio)
         .sort((a, b) => b.createdAt - a.createdAt);
+
+      const kw = (searchKeyword || "").trim().toLowerCase();
+      if (activeTagFilter) {
+        studioCards = studioCards.filter(c => Array.isArray(c.tags) && c.tags.includes(activeTagFilter));
+      }
+      if (kw) {
+        studioCards = studioCards.filter(c => {
+          const hay = ((c.title || "") + " " + (c.content || "") + " " + (Array.isArray(c.tags) ? c.tags.join(" ") : "")).toLowerCase();
+          return hay.includes(kw);
+        });
+      }
+
       const emptyHint = document.getElementById("emptyHint");
       if (studioCards.length === 0) {
         emptyHint.style.display = "block";
@@ -1123,6 +1322,18 @@
           imgEl.alt = card.title || "照片";
         }
 
+        const tagsRow = document.createElement("div");
+        tagsRow.className = "card-tags";
+        if (Array.isArray(card.tags) && card.tags.length) {
+          card.tags.forEach(tag => {
+            const pill = document.createElement("button");
+            pill.className = "tag-pill" + (tag === activeTagFilter ? " active" : "");
+            pill.textContent = "#" + tag;
+            pill.addEventListener("click", () => setTagFilter(tag));
+            tagsRow.appendChild(pill);
+          });
+        }
+
         const footer = document.createElement("div");
         footer.className = "card-footer";
 
@@ -1140,6 +1351,12 @@
           footer.appendChild(btnDetail);
         }
 
+        const btnCopy = document.createElement("button");
+        btnCopy.className = "btn-small";
+        btnCopy.textContent = "复制全文";
+        btnCopy.addEventListener("click", () => copyCard(card.id));
+        footer.appendChild(btnCopy);
+
         const btnDelete = document.createElement("button");
         btnDelete.className = "btn-small btn-small-danger";
         btnDelete.textContent = "删除";
@@ -1149,6 +1366,7 @@
         cardEl.appendChild(headerLine);
         cardEl.appendChild(contentEl);
         if (imgEl) cardEl.appendChild(imgEl);
+        if (tagsRow.childNodes.length) cardEl.appendChild(tagsRow);
         cardEl.appendChild(footer);
 
         listEl.appendChild(cardEl);
@@ -1161,6 +1379,7 @@
       document.getElementById("modalEditTitle").textContent = "新建卡片";
       document.getElementById("editTitle").value = "";
       document.getElementById("editContent").value = "";
+      document.getElementById("editTags").value = "";
       openModal("modalEdit");
     }
 
@@ -1171,12 +1390,15 @@
       document.getElementById("modalEditTitle").textContent = "编辑卡片";
       document.getElementById("editTitle").value = card.title || "";
       document.getElementById("editContent").value = card.content || "";
+      document.getElementById("editTags").value = Array.isArray(card.tags) ? card.tags.join(" ") : "";
       openModal("modalEdit");
     }
 
     function saveEdit() {
       const title = document.getElementById("editTitle").value.trim();
       const content = document.getElementById("editContent").value;
+      const rawTags = document.getElementById("editTags").value;
+      const tags = parseTags(rawTags);
       if (!content.trim()) {
         alert("至少写一点内容，再保存这张卡片。");
         return;
@@ -1189,7 +1411,8 @@
             ...cards[idx],
             title,
             content,
-            updatedAt: now
+            updatedAt: now,
+            tags
           };
         }
       } else {
@@ -1201,7 +1424,8 @@
           content,
           createdAt: now,
           updatedAt: now,
-          templateType: "plain"
+          templateType: "plain",
+          tags
         });
       }
       saveCards();
@@ -1262,12 +1486,14 @@
         content,
         createdAt: now,
         updatedAt: now,
-        templateType: "once_note"
+        templateType: "once_note",
+        tags: ["生活", "这一次"]
       });
       saveCards();
       closeModal("modalOnce");
       setCurrentStudio("life");
       switchView("studio");
+      renderCardList();
     }
 
     // 生活：补一补细节
@@ -1367,12 +1593,14 @@
         content,
         createdAt: now,
         updatedAt: now,
-        templateType: "melody_seed"
+        templateType: "melody_seed",
+        tags: ["艺术", "旋律"]
       });
       saveCards();
       closeModal("modalMelody");
       setCurrentStudio("art");
       switchView("studio");
+      renderCardList();
     }
 
     // 艺术：小说骨架
@@ -1406,12 +1634,171 @@
         content,
         createdAt: now,
         updatedAt: now,
-        templateType: "story_skeleton"
+        templateType: "story_skeleton",
+        tags: ["艺术", "小说"]
       });
       saveCards();
       closeModal("modalStory");
       setCurrentStudio("art");
       switchView("studio");
+      renderCardList();
+    }
+
+    // 标签筛选
+    function setTagFilter(tag) {
+      activeTagFilter = tag;
+      updateFilterUI();
+      renderCardList();
+    }
+
+    function clearTagFilter() {
+      activeTagFilter = null;
+      updateFilterUI();
+      renderCardList();
+    }
+
+    function updateFilterUI() {
+      const container = document.getElementById("filterTagContainer");
+      if (!container) return;
+      container.innerHTML = "";
+      if (activeTagFilter) {
+        const pill = document.createElement("button");
+        pill.className = "tag-pill active";
+        pill.textContent = "#" + activeTagFilter + " ×";
+        pill.addEventListener("click", clearTagFilter);
+        container.appendChild(pill);
+      } else {
+        const hint = document.createElement("span");
+        hint.className = "filter-hint";
+        hint.textContent = "当前：查看全部卡片";
+        container.appendChild(hint);
+      }
+      const input = document.getElementById("searchInput");
+      if (input) input.value = searchKeyword;
+    }
+
+    function handleSearchInput(event) {
+      searchKeyword = event.target.value || "";
+      renderCardList();
+    }
+
+    // 复制全文
+    async function copyCard(id) {
+      const card = cards.find(c => c.id === id);
+      if (!card) return;
+      const studioName = STUDIO_CONFIG[card.studio]?.name || card.studio || "";
+      const lines = [];
+      lines.push(`[${studioName}] ${card.title || "未命名卡片"}`);
+      lines.push(`时间：${formatTime(card.createdAt)}`);
+      const tagsLine = Array.isArray(card.tags) && card.tags.length
+        ? card.tags.map(t => "#" + t).join(" ")
+        : "（无标签）";
+      lines.push(`标签：${tagsLine}`);
+      if (card.templateType) {
+        lines.push(`类型：${card.templateType}`);
+      }
+      lines.push("");
+      lines.push(card.content || "");
+      const text = lines.join("\n");
+      try {
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          await navigator.clipboard.writeText(text);
+          alert("这张卡片已经复制到剪贴板，可以直接粘贴到微信。");
+        } else {
+          // fallback：打开一个 prompt，让用户手动复制
+          window.prompt("复制下面的内容：", text);
+        }
+      } catch (e) {
+        window.prompt("复制失败，可以手动复制下面的内容：", text);
+      }
+    }
+
+    // 导出功能
+    function exportAllCards() {
+      if (!cards.length) {
+        alert("还没有任何卡片可以导出。");
+        return;
+      }
+      exportCards(cards, "全部工作室");
+    }
+
+    function exportCurrentStudio() {
+      const list = cards.filter(c => c.studio === currentStudio);
+      if (!list.length) {
+        alert("当前工作室还没有卡片可导出。");
+        return;
+      }
+      const label = STUDIO_CONFIG[currentStudio]?.name || currentStudio;
+      exportCards(list, label);
+    }
+
+    function exportCards(list, scopeLabel) {
+      const sorted = [...list].sort((a, b) => a.createdAt - b.createdAt);
+      const now = new Date();
+      const y = now.getFullYear();
+      const m = String(now.getMonth() + 1).padStart(2, "0");
+      const d = String(now.getDate()).padStart(2, "0");
+      const dateStr = `${y}-${m}-${d}`;
+
+      const lines = [];
+      lines.push("老年工作室 · 记录导出");
+      lines.push(`导出时间：${dateStr}`);
+      lines.push(`范围：${scopeLabel}`);
+      lines.push("");
+
+      sorted.forEach((card, idx) => {
+        const studioName = STUDIO_CONFIG[card.studio]?.name || card.studio || "";
+        const tagsLine =
+          Array.isArray(card.tags) && card.tags.length
+            ? card.tags.map(t => "#" + t).join(" ")
+            : "（无标签）";
+        lines.push("------------------------------");
+        lines.push(`${idx + 1}. [${studioName}] ${card.title || "未命名卡片"}`);
+        lines.push(`时间：${formatTime(card.createdAt)}`);
+        lines.push(`标签：${tagsLine}`);
+        if (card.templateType) {
+          lines.push(`类型：${card.templateType}`);
+        }
+        lines.push("");
+        lines.push(card.content || "");
+        lines.push("");
+      });
+
+      const blob = new Blob([lines.join("\n")], { type: "text/plain;charset=utf-8" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      const scopeSafe = scopeLabel.replace(/[^\u4e00-\u9fa5_a-zA-Z0-9]/g, "");
+      a.download = `老年工作室_导出_${scopeSafe || "全部"}_${y}${m}${d}.txt`;
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      URL.revokeObjectURL(url);
+    }
+
+    // 最近卡片
+    function renderRecent() {
+      const block = document.getElementById("recentBlock");
+      const listEl = document.getElementById("recentList");
+      if (!block || !listEl) return;
+      listEl.innerHTML = "";
+      if (!cards.length) {
+        block.style.display = "none";
+        return;
+      }
+      const sorted = [...cards].sort((a, b) => b.createdAt - a.createdAt).slice(0, 5);
+      sorted.forEach(card => {
+        const item = document.createElement("div");
+        item.className = "recent-item";
+        const studioName = STUDIO_CONFIG[card.studio]?.name || card.studio || "";
+        item.textContent = `${formatTime(card.createdAt)} · ${studioName} · ${card.title || "未命名卡片"}`;
+        item.addEventListener("click", () => {
+          setCurrentStudio(card.studio || "life");
+          switchView("studio");
+        });
+        listEl.appendChild(item);
+      });
+      block.style.display = "block";
     }
 
     // 底部导航相关
@@ -1430,6 +1817,8 @@
 
     function goHome() {
       currentStudio = "life";
+      activeTagFilter = null;
+      searchKeyword = "";
       switchView("home");
       setCurrentStudio(currentStudio);
       window.scrollTo({ top: 0, behavior: "smooth" });
@@ -1439,10 +1828,16 @@
       cards = loadCards();
       setCurrentStudio(currentStudio);
       switchView("home");
+      renderRecent();
 
       const photoInput = document.getElementById("quickPhotoInput");
       if (photoInput) {
         photoInput.addEventListener("change", handlePhotoSelected);
+      }
+
+      const searchInput = document.getElementById("searchInput");
+      if (searchInput) {
+        searchInput.addEventListener("input", handleSearchInput);
       }
     });
   </script>
