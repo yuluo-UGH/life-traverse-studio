@@ -28,16 +28,37 @@
     .app {
       width: 100%;
       max-width: 960px;
-      padding: 16px 12px 28px;
+      padding: 16px 12px 72px; /* 给底部导航留空间 */
     }
     @media (min-width: 768px) {
-      .app { padding: 20px 16px 32px; }
+      .app { padding: 20px 16px 80px; }
     }
     .top-bar {
       display: flex;
       align-items: center;
       justify-content: space-between;
       margin-bottom: 10px;
+    }
+    .top-left {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+    .back-link {
+      align-self: flex-start;
+      border: none;
+      background: transparent;
+      color: var(--text-sub);
+      font-size: 11px;
+      padding: 2px 6px;
+      border-radius: 999px;
+      cursor: pointer;
+      border: 1px solid transparent;
+      margin-bottom: 2px;
+    }
+    .back-link:hover {
+      border-color: var(--border-soft);
+      color: var(--text-main);
     }
     .top-title {
       font-size: 18px;
@@ -73,40 +94,6 @@
     .avatar-text-sub {
       font-size: 11px;
       color: var(--text-sub);
-    }
-
-    .studio-tabs {
-      display: flex;
-      gap: 6px;
-      margin: 10px 0 12px;
-      overflow-x: auto;
-      padding-bottom: 2px;
-    }
-    .studio-tab {
-      flex: 1;
-      min-width: 0;
-      border-radius: 999px;
-      border: 1px solid var(--border-soft);
-      background: rgba(15, 23, 42, 0.9);
-      padding: 6px 10px;
-      font-size: 13px;
-      color: var(--text-sub);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      white-space: nowrap;
-      cursor: pointer;
-      transition: background 0.15s ease-out, border-color 0.15s ease-out, color 0.15s ease-out, transform 0.08s ease-out;
-    }
-    .studio-tab span {
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-    .studio-tab.active {
-      color: var(--text-main);
-      border-color: var(--accent);
-      background: radial-gradient(circle at top left, var(--accent-soft), rgba(15, 23, 42, 0.96));
-      transform: translateY(-1px);
     }
 
     .layout {
@@ -208,7 +195,7 @@
       display: flex;
       flex-direction: column;
       gap: 8px;
-      max-height: calc(100vh - 150px);
+      max-height: calc(100vh - 170px);
       overflow-y: auto;
       padding-right: 2px;
     }
@@ -416,12 +403,55 @@
     .btn-pad:hover {
       border-color: var(--accent);
     }
+
+    /* 底部导航条 */
+    .bottom-nav {
+      position: fixed;
+      left: 50%;
+      transform: translateX(-50%);
+      bottom: 10px;
+      width: 100%;
+      max-width: 960px;
+      padding: 6px 10px;
+      z-index: 40;
+    }
+    .bottom-nav-inner {
+      border-radius: 999px;
+      border: 1px solid rgba(31, 41, 55, 0.9);
+      background: rgba(15, 23, 42, 0.96);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 4px;
+      padding: 4px;
+    }
+    .bottom-nav-btn {
+      flex: 1;
+      min-width: 0;
+      border-radius: 999px;
+      border: none;
+      background: transparent;
+      color: var(--text-sub);
+      font-size: 12px;
+      padding: 6px 4px;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: background 0.12s ease-out, color 0.12s ease-out;
+    }
+    .bottom-nav-btn.home {
+      flex: 1.2;
+    }
+    .bottom-nav-btn.active {
+      background: radial-gradient(circle at top, var(--accent-soft), rgba(15, 23, 42, 0.96));
+      color: var(--text-main);
+    }
   </style>
 </head>
 <body>
   <main class="app">
     <header class="top-bar">
-      <div>
+      <div class="top-left">
+        <button class="back-link" onclick="goHome()">← 回大厅</button>
         <div class="top-title">老年工作室</div>
         <div class="top-subtitle">用记录，留住越过的痕迹。</div>
       </div>
@@ -433,13 +463,6 @@
         </div>
       </div>
     </header>
-
-    <section class="studio-tabs">
-      <button class="studio-tab" data-studio="life"><span>生活</span></button>
-      <button class="studio-tab" data-studio="art"><span>艺术</span></button>
-      <button class="studio-tab" data-studio="idea"><span>思想</span></button>
-      <button class="studio-tab" data-studio="tech"><span>技术</span></button>
-    </section>
 
     <section class="layout">
       <div class="panel panel-left">
@@ -469,6 +492,17 @@
       </div>
     </section>
   </main>
+
+  <!-- 底部导航 -->
+  <nav class="bottom-nav">
+    <div class="bottom-nav-inner">
+      <button class="bottom-nav-btn home" onclick="goHome()">大厅</button>
+      <button class="bottom-nav-btn" data-studio="life" onclick="switchStudio('life')">生活</button>
+      <button class="bottom-nav-btn" data-studio="art" onclick="switchStudio('art')">艺术</button>
+      <button class="bottom-nav-btn" data-studio="idea" onclick="switchStudio('idea')">思想</button>
+      <button class="bottom-nav-btn" data-studio="tech" onclick="switchStudio('tech')">技术</button>
+    </div>
+  </nav>
 
   <!-- 新建 / 编辑卡片 -->
   <div class="modal-wrap" id="modalEdit">
@@ -625,7 +659,7 @@
         name: "生活工作室",
         fullName: "精彩生活 / 温馨回忆",
         desc: "随手记一件这一次想留住的小事，不用写长篇，慢慢也会积累出一份可以翻看的生活记录。",
-        hint: "可以从一件小事开始：今天或最近发生，让你有点在意的那一次。",
+        hint: "可以从一件小事开始：最近发生，让你有点在意的那一次。",
         buttons: [
           { type: "main", label: "新建卡片", handler: "openNewCard" },
           { type: "ghost", label: "随手记一张小卡", handler: "openOnceModal" }
@@ -702,13 +736,6 @@
       if (!STUDIO_CONFIG[studio]) studio = "life";
       currentStudio = studio;
 
-      // tab 高亮
-      document.querySelectorAll(".studio-tab").forEach(btn => {
-        const s = btn.dataset.studio;
-        btn.classList.toggle("active", s === studio);
-      });
-
-      // 左侧信息
       const conf = STUDIO_CONFIG[studio];
       document.getElementById("studioName").textContent = conf.name;
       document.getElementById("studioFullName").textContent = conf.fullName;
@@ -735,6 +762,7 @@
         btnRow.appendChild(el);
       });
 
+      updateBottomNavActive();
       renderCardList();
     }
 
@@ -1057,14 +1085,26 @@
       setCurrentStudio("art");
     }
 
+    // 底部导航相关
+    function updateBottomNavActive() {
+      const buttons = document.querySelectorAll(".bottom-nav-btn[data-studio]");
+      buttons.forEach(btn => {
+        const s = btn.getAttribute("data-studio");
+        btn.classList.toggle("active", s === currentStudio);
+      });
+    }
+
+    function switchStudio(studio) {
+      setCurrentStudio(studio);
+    }
+
+    function goHome() {
+      // 回到首页，带 home=1 避免自动跳回工作室
+      window.location.href = "index.html?home=1";
+    }
+
     document.addEventListener("DOMContentLoaded", () => {
       cards = loadCards();
-      document.querySelectorAll(".studio-tab").forEach(btn => {
-        btn.addEventListener("click", () => {
-          const s = btn.dataset.studio;
-          setCurrentStudio(s);
-        });
-      });
       setCurrentStudio(currentStudio);
     });
   </script>
