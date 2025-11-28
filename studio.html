@@ -139,34 +139,71 @@
       margin-bottom: 10px;
       line-height: 1.6;
     }
-    .home-actions {
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-    }
-    @media (min-width: 768px) {
-      .home-actions {
-        flex-direction: row;
-      }
-    }
-    .home-action {
-      flex: 1;
-      min-width: 0;
-      border-radius: 14px;
-      border: 1px solid var(--border-soft);
-      background: rgba(15, 23, 42, 0.96);
-      padding: 10px 11px;
-      text-align: left;
-      cursor: pointer;
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
-      transition: border-color 0.12s ease-out, transform 0.08s ease-out, box-shadow 0.12s ease-out, background 0.12s ease-out;
-    }
-    .home-action:hover {
-      border-color: var(--accent);
-      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45);
-      transform: translateY(-1px);
+   .home-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+@media (min-width: 768px) {
+  .home-actions {
+    flex-direction: row;
+  }
+}
+
+/* 三个大按钮的公共样式 */
+.home-action {
+  flex: 1;
+  min-width: 0;
+  border-radius: 16px;
+  border: 2px solid transparent;
+  padding: 11px 12px;
+  text-align: left;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.5);
+  transition:
+    border-color 0.12s ease-out,
+    transform 0.08s ease-out,
+    box-shadow 0.12s ease-out,
+    background 0.12s ease-out;
+}
+
+/* 第 1 个：说一说（绿色） */
+.home-action:nth-child(1) {
+  background: linear-gradient(135deg, #22c55e, #16a34a);
+  border-color: rgba(21, 128, 61, 0.9);
+}
+
+/* 第 2 个：写一小段（蓝色） */
+.home-action:nth-child(2) {
+  background: linear-gradient(135deg, #38bdf8, #0ea5e9);
+  border-color: rgba(37, 99, 235, 0.9);
+}
+
+/* 第 3 个：拍一张（金色） */
+.home-action:nth-child(3) {
+  background: linear-gradient(135deg, #eab308, #facc15);
+  border-color: rgba(202, 138, 4, 0.9);
+}
+
+/* 悬停统一效果（PC 上更明显；手机几乎看不出 hover，但不影响） */
+.home-action:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 10px 26px rgba(0, 0, 0, 0.6);
+}
+
+/* 里面的字颜色固定为深色，和背景形成反差 */
+.home-action-main,
+.home-action-desc {
+  color: #022c22;
+}
+.home-action-desc {
+  font-size: 12px;
+  line-height: 1.6;
+}
+
     }
     .home-action-main {
       display: flex;
@@ -1421,3 +1458,4 @@
   </script>
 </body>
 </html>
+
