@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1" />
+  <title>遍历人生 · 老年工作室 · 本地入口</title>
+  <style>
+    :root {
+      color-scheme: dark;
+      --bg: #020617;
+      --card: #020617;
+      --accent: #22c55e;
+      --text-main: #f9fafb;
+      --text-sub: #9ca3af;
+      --border-soft: #1f2937;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif;
+      background: radial-gradient(circle at top, #020617 0, #000 80%);
+      color: var(--text-main);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+    }
+    .card {
+      width: 100%;
+      max-width: 640px;
+      background: rgba(15, 23, 42, 0.96);
+      border-radius: 16px;
+      border: 1px solid var(--border-soft);
+      padding: 16px 14px 18px;
+    }
+    .title {
+      font-size: 18px;
+      font-weight: 650;
+      margin-bottom: 6px;
+    }
+    .subtitle {
+      font-size: 13px;
+      color: var(--text-sub);
+      margin-bottom: 10px;
+    }
+    .section-title {
+      font-size: 14px;
+      font-weight: 600;
+      margin: 10px 0 4px;
+    }
+    .text {
+      font-size: 13px;
+      color: var(--text-sub);
+      line-height: 1.7;
+    }
+    .text p { margin-bottom: 6px; }
+    .btn {
+      margin-top: 14px;
+      border-radius: 999px;
+      border: none;
+      padding: 9px 16px;
+      font-size: 14px;
+      font-weight: 560;
+      background: linear-gradient(135deg, var(--accent), #4ade80);
+      color: #022c22;
+      cursor: pointer;
+      width: 100%;
+      text-align: center;
+    }
+    .btn:hover {
+      filter: brightness(1.05);
+    }
+    .small {
+      font-size: 11px;
+      color: var(--text-sub);
+      margin-top: 8px;
+      line-height: 1.6;
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <div class="title">遍历人生 · 老年工作室</div>
+    <div class="subtitle">本地入口 · 建议先固定到手机桌面，再长期使用。</div>
+
+    <div class="section-title">一、这是做什么用的？</div>
+    <div class="text">
+      <p>这是一个给 50–80 岁用户使用的轻量工作室，用来记录生活、回忆、想法和技术经验。</p>
+      <p>它只做记录和整理，不做医疗、理财、法律等决策。</p>
+    </div>
+
+    <div class="section-title">二、建议你这样使用（手机）</div>
+    <div class="text">
+      <p>1. 用浏览器打开本页面（如果是从微信打开，请在右上角选择“在浏览器打开”。</p>
+      <p>2. 在浏览器菜单里找到“添加到主屏幕 / 添加到主屏幕图标 / Add to Home Screen”。</p>
+      <p>3. 添加后，桌面会出现一个图标：以后只需要点这个图标就能进入老年工作室。</p>
+    </div>
+
+    <button class="btn" onclick="enterApp()">进入老年工作室</button>
+    <div class="small">
+      如果你觉得上面的步骤有点麻烦，可以请熟悉手机的家人或朋友帮你操作一次。以后你只需要记住：找到那个图标，点一下。
+    </div>
+  </div>
+
+  <script>
+    function enterApp() {
+      // 本地压缩包场景下，index.html 和 studio.html 应该在同一目录
+      window.location.href = "index.html";
+    }
+  </script>
+</body>
+</html>
