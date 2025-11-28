@@ -7,23 +7,20 @@
   <style>
     :root {
       color-scheme: dark;
-      --bg: #050814;
-      --card: #10131f;
-      --accent: #f4c15b;
-      --accent-soft: rgba(244, 193, 91, 0.12);
-      --text-main: #f5f5f7;
-      --text-sub: #b0b3c5;
-      --border-soft: #232633;
+      --bg: #020617;
+      --bg-top: #020617;
+      --bg-bottom: #020617;
+      --card: #020617;
+      --accent: #22c55e;
+      --accent-soft: rgba(34, 197, 94, 0.12);
+      --text-main: #f9fafb;
+      --text-sub: #9ca3af;
+      --border-soft: #1f2937;
     }
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro SC", "PingFang SC",
-        "Microsoft YaHei", sans-serif;
-      background: radial-gradient(circle at top, #151b33 0, #050814 45%, #020309 100%);
+      font-family: system-ui,-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;
+      background: radial-gradient(circle at top, #0b1120 0, #020617 45%, #000 100%);
       color: var(--text-main);
       min-height: 100vh;
       display: flex;
@@ -32,66 +29,100 @@
     .wrap {
       width: 100%;
       max-width: 960px;
-      padding: 24px 18px 40px;
+      padding: 22px 16px 32px;
     }
     header {
-      margin-bottom: 28px;
+      margin-bottom: 18px;
     }
     .logo-line {
-      font-size: 18px;
-      letter-spacing: 0.05em;
+      font-size: 15px;
+      letter-spacing: 0.08em;
       color: var(--accent);
       margin-bottom: 6px;
+      text-transform: uppercase;
     }
     h1 {
-      font-size: 26px;
+      font-size: 24px;
       font-weight: 650;
-      letter-spacing: 0.04em;
-      margin-bottom: 10px;
+      margin-bottom: 8px;
     }
     .subtitle {
       font-size: 14px;
       line-height: 1.7;
       color: var(--text-sub);
+      margin-bottom: 12px;
     }
 
-    .tagline-card {
-      margin-top: 20px;
-      padding: 14px 16px;
-      border-radius: 18px;
-      background: linear-gradient(135deg, rgba(244, 193, 91, 0.16), rgba(13, 20, 38, 0.9));
-      border: 1px solid rgba(244, 193, 91, 0.3);
+    .cta-top {
+      padding: 12px 12px 10px;
+      border-radius: 16px;
+      border: 1px solid var(--border-soft);
+      background: radial-gradient(circle at top left, rgba(34, 197, 94, 0.18), #020617);
+      margin-bottom: 14px;
+    }
+    .cta-text {
       font-size: 14px;
+      margin-bottom: 10px;
       line-height: 1.7;
+    }
+    .cta-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 9px 20px;
+      border-radius: 999px;
+      border: none;
+      font-size: 15px;
+      font-weight: 560;
+      color: #022c22;
+      background: linear-gradient(135deg,#22c55e,#4ade80);
+      cursor: pointer;
+      text-decoration: none;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.35);
+      transition: transform 0.14s ease-out, box-shadow 0.14s ease-out, background 0.14s ease-out;
+      white-space: nowrap;
+    }
+    .cta-btn:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 10px 26px rgba(0,0,0,0.45);
+      background: linear-gradient(135deg,#4ade80,#bbf7d0);
+    }
+    .cta-btn:active {
+      transform: translateY(0);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.45);
+    }
+    .cta-note {
+      margin-top: 6px;
+      font-size: 12px;
+      color: var(--text-sub);
+      line-height: 1.6;
     }
 
     .section-title {
-      margin-top: 26px;
-      margin-bottom: 10px;
-      font-size: 16px;
+      margin-top: 18px;
+      margin-bottom: 8px;
+      font-size: 15px;
       font-weight: 600;
     }
 
     .studio-grid {
       display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 10px;
+      grid-template-columns: repeat(2,minmax(0,1fr));
+      gap: 8px;
     }
     @media (max-width: 640px) {
-      .studio-grid {
-        grid-template-columns: 1fr;
-      }
+      .studio-grid { grid-template-columns: 1fr; }
     }
     .studio-card {
       background: var(--card);
-      border-radius: 16px;
+      border-radius: 14px;
       border: 1px solid var(--border-soft);
-      padding: 12px 12px 12px;
+      padding: 10px 11px 9px;
     }
     .studio-name {
-      font-size: 15px;
+      font-size: 14px;
       font-weight: 560;
-      margin-bottom: 4px;
+      margin-bottom: 3px;
     }
     .studio-desc {
       font-size: 13px;
@@ -99,80 +130,71 @@
       color: var(--text-sub);
     }
 
-    .cta-box {
-      margin-top: 28px;
-      padding: 16px 16px 14px;
-      border-radius: 18px;
+    .info-card {
+      margin-top: 12px;
+      padding: 10px 11px 9px;
+      border-radius: 14px;
+      background: #020617;
       border: 1px solid var(--border-soft);
-      background: radial-gradient(circle at top left, rgba(244, 193, 91, 0.18), #0b0f1d);
-    }
-    .cta-main {
-      font-size: 15px;
-      margin-bottom: 10px;
-    }
-    .cta-main span {
-      color: var(--accent);
-    }
-    .cta-btn {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      padding: 10px 22px;
-      border-radius: 999px;
-      border: none;
-      font-size: 15px;
-      font-weight: 560;
-      color: #111;
-      background: var(--accent);
-      cursor: pointer;
-      text-decoration: none;
-      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.35);
-      transition: transform 0.14s ease-out, box-shadow 0.14s ease-out, background 0.14s ease-out;
-    }
-    .cta-btn:hover {
-      transform: translateY(-1px);
-      box-shadow: 0 10px 26px rgba(0, 0, 0, 0.45);
-      background: #ffd880;
-    }
-    .cta-btn:active {
-      transform: translateY(0);
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.45);
-    }
-    .cta-note {
-      margin-top: 10px;
-      font-size: 12px;
-      line-height: 1.7;
+      font-size: 13px;
       color: var(--text-sub);
+      line-height: 1.7;
     }
-    .cta-note b {
-      color: var(--accent);
-      font-weight: 500;
-    }
+    .info-card b { color: var(--text-main); }
 
     footer {
-      margin-top: 26px;
+      margin-top: 18px;
       font-size: 11px;
       color: var(--text-sub);
-      border-top: 1px solid rgba(255, 255, 255, 0.04);
-      padding-top: 10px;
-      line-height: 1.7;
+      border-top: 1px solid rgba(148,163,184,0.2);
+      padding-top: 8px;
+      line-height: 1.6;
     }
   </style>
+  <script>
+    // 是否已经来过一次：来过就直接进工作台
+    (function () {
+      try {
+        var VISIT_KEY = "lt_elder_hasVisited";
+        var params = new URLSearchParams(window.location.search || "");
+        var forceHome = params.get("home") === "1";
+        var hasVisited = window.localStorage.getItem(VISIT_KEY) === "1";
+        if (hasVisited && !forceHome) {
+          window.location.replace("studio.html");
+        }
+      } catch (e) {
+        // 本地不开启也没关系
+      }
+    })();
+
+    function enterStudio() {
+      try {
+        window.localStorage.setItem("lt_elder_hasVisited", "1");
+      } catch (e) {}
+      window.location.href = "studio.html";
+    }
+  </script>
 </head>
 <body>
   <main class="wrap">
     <header>
-      <div class="logo-line">LifeTraverse · Personal Record</div>
+      <div class="logo-line">LIFETRAVERSE · PERSONAL STUDIO</div>
       <h1>老年工作室 × UGH</h1>
       <div class="subtitle">
         不总结人生，只是慢慢整理。<br />
         把故事、作品、想法和经验安静地写下来，留给自己，也留给在乎你的人。
       </div>
-      <div class="tagline-card">
-        为 50–80 岁左右的人准备的一间「长期小书房」：今天写一点，过几天再补一段，
-        不急着完结，只是把一路走来的痕迹，慢慢收好。
-      </div>
     </header>
+
+    <section class="cta-top">
+      <div class="cta-text">
+        这里是你的个人工作室，不是群聊，也不是作业本。每次只需写一件事、一小段想法就好。
+      </div>
+      <button class="cta-btn" onclick="enterStudio()">进入我的工作室</button>
+      <div class="cta-note">
+        提示：在手机浏览器菜单里找到「添加到主屏幕 / 添加到桌面」，以后只要点桌面上的图标就能直接进来。
+      </div>
+    </section>
 
     <section>
       <div class="section-title">四个小工作室</div>
@@ -204,20 +226,14 @@
       </div>
     </section>
 
-    <section class="cta-box">
-      <div class="cta-main">
-        <span>第一次使用：</span>可以先在电脑上试一试，熟悉结构。觉得顺手后，再在手机上把本页面添加到桌面。
-      </div>
-      <a class="cta-btn" href="studio.html">进入我的工作室</a>
-      <div class="cta-note">
-        提示：在手机浏览器菜单里找到 <b>「添加到主屏幕 / 添加到桌面」</b>，
-        以后只要点桌面上的图标，就能直接进来。
-      </div>
+    <section class="info-card">
+      <b>责任边界：</b>
+      老年工作室只帮你记录、整理和表达，不做医疗、养老规划、投资或法律决策。
+      涉及这些问题，只会帮你把情况和问题写清楚，方便你去问专业人士。
     </section>
 
     <footer>
-      本页面只负责记录与整理，不做医疗、投资、法律等决策建议。<br />
-      老年工作室 · UGH 内核本地版（测试中）。
+      LifeTraverse · 老年工作室（浏览器测试版） · 基于 UGH 内核本地运行。
     </footer>
   </main>
 </body>
